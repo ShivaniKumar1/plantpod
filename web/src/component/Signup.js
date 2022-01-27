@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './Signup.css';
 
-class Signup extends Component {
+export default class Signup extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,28 +28,28 @@ class Signup extends Component {
     render() {
         return (
             <div className="signup">
-                <h1>Create an Account.</h1>
+                <h2>Don't have an account? Create an account below.</h2>
                 <form className="form-wrapper" onSubmit={this.handleSubmit}>
-                    <div className="fname">
-                        <label className="label">First name</label>
-                        <input className="input" type="fname"/>
-                    </div>
-                    <div className="lname">
-                        <label className="label">Last name</label>
-                        <input className="input" type="lname"/>
-                    </div>
-                    <div className="username">
-                        <label className="label">Username</label>
-                        <input className="input" type="username"/>
-                    </div>
-                    <div className="email">
-                        <label className="label">Email</label>
-                        <input className="input" type="email"/>
-                    </div>
-                    <div className="password">
-                        <label className="label">Password</label>
-                        <input className="input" type="password"/>
-                    </div>
+                    <label className="label">
+                        <p>First name</p>
+                        <input type="fname"/>
+                    </label>
+                    <label className="label">
+                        <p>Last name</p>
+                        <input type="lname"/>
+                    </label>
+                    <label className="label">
+                        <p>Username</p>
+                        <input type="username"/>
+                    </label>
+                    <label className="label">
+                        <p>Email</p>
+                        <input type="email"/>
+                    </label>
+                    <label className="label">
+                        <p>Password</p>
+                        <input type="password"/>
+                    </label>
                     <div className="submit">
                         <button className="submit">Submit</button>
                     </div>
@@ -58,5 +58,3 @@ class Signup extends Component {
         );
     }
 }
-
-export default Signup;
