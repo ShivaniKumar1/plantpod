@@ -1,5 +1,62 @@
-import React from 'react';
+import React, {Component} from 'react';
+import './Signup.css';
 
-export default function Signup() {
-    return <h1>Sign up to create an account.</h1>;
+class Signup extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            fName:"",
+            lName:"",
+            userName:"",
+            email:"",
+            password:""
+        };
+    }
+    // This component makes sure that the page doesn't reload 
+    // everytime the form gets submitted.
+    handleSubmit(event) {
+        alert('Your form was submitted')
+        event.preventDefault();
+    }
+
+    handleChange(event) {
+        var value = event.target.value;
+        this.setState({
+            
+        })
+    }
+    render() {
+        return (
+            <div className="signup">
+                <h1>Create an Account.</h1>
+                <form className="form-wrapper" onSubmit={this.handleSubmit}>
+                    <div className="fname">
+                        <label classname="label">First name</label>
+                        <input className="input" type="fname"/>
+                    </div>
+                    <div className="lname">
+                        <label classname="label">Last name</label>
+                        <input className="input" type="lname"/>
+                    </div>
+                    <div className="username">
+                        <label classname="label">Username</label>
+                        <input className="input" type="username"/>
+                    </div>
+                    <div className="email">
+                        <label classname="label">Email</label>
+                        <input className="input" type="email"/>
+                    </div>
+                    <div className="password">
+                        <label classname="label">Password</label>
+                        <input className="input" type="password"/>
+                    </div>
+                    <div className="submit">
+                        <button className="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        );
+    }
 }
+
+export default Signup;
