@@ -3,7 +3,7 @@ import {BrowserRouter as Router, Switch, Link, Route} from 'react-router-dom';
 import logo from './logo.svg';
 import Login from './component/Login';
 import Signup from './component/Signup';
-import useToken from './componenet/useToken';
+import useToken from './component/useToken';
 import './App.css';
 
 function setToken(userToken) {
