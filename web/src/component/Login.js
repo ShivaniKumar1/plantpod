@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import {BrowserRouter as Router, Switch, Link, Route} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Signup from './Signup';
 import './Login.css';
 
 async function loginUser(creds) {
@@ -44,14 +42,6 @@ export default function Login({ setToken }) {
                     <button type="submit">Submit</button>
                 </div>
             </form>
-            <Router>
-                <div className="nav">
-                    <Link to="/signup">Signup</Link>
-                    <Switch>
-                        <Route path="/signup"><Signup/></Route>
-                    </Switch>
-                </div>
-            </Router>
         </div>
     )
 }
