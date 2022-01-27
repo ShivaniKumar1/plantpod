@@ -22,7 +22,7 @@ class Signup extends Component {
     handleChange(event) {
         var value = event.target.value;
         this.setState({
-            
+
         })
     }
     render() {
@@ -31,23 +31,23 @@ class Signup extends Component {
                 <h1>Create an Account.</h1>
                 <form className="form-wrapper" onSubmit={this.handleSubmit}>
                     <div className="fname">
-                        <label classname="label">First name</label>
+                        <label className="label">First name</label>
                         <input className="input" type="fname"/>
                     </div>
                     <div className="lname">
-                        <label classname="label">Last name</label>
+                        <label className="label">Last name</label>
                         <input className="input" type="lname"/>
                     </div>
                     <div className="username">
-                        <label classname="label">Username</label>
+                        <label className="label">Username</label>
                         <input className="input" type="username"/>
                     </div>
                     <div className="email">
-                        <label classname="label">Email</label>
+                        <label className="label">Email</label>
                         <input className="input" type="email"/>
                     </div>
                     <div className="password">
-                        <label classname="label">Password</label>
+                        <label className="label">Password</label>
                         <input className="input" type="password"/>
                     </div>
                     <div className="submit">
