@@ -11,6 +11,11 @@ const
   getCleanUser, verifyToken, clearTokens, handleResponse,
 } = require('./util');
 
+const
+{
+  doesUserExist
+} = require('./databasehelper.js');
+
 const app = express();
 const port = process.env.PORT || 4000;
 
@@ -84,7 +89,7 @@ const authMiddleware = function (req, res, next) {
 
 
 // validate user credentials
-app.post('/users/signin', function (req, res)
+app.post('/users/signin', async function (req, res)
 {
   const user = req.body.username;
   const pwd = req.body.password;
@@ -94,6 +99,10 @@ app.post('/users/signin', function (req, res)
   {
     return handleResponse(req, res, 400, null, "Username and Password required.");
   }
+
+  let auth = await doesUserExist(user, pwd);
+
+  console.log('Auth is' + auth);
 
   // SANITIZE INPUT (once we switch to grabing from sql)
   const userData = userList.find(x => x.username === user && x.password === pwd);
