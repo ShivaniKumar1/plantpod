@@ -11,24 +11,20 @@ export default class Signup extends Component {
             email:"",
             password:""
         };
+        this.onSubmit = this.handleSubmit.bind(this);
     }
     // This component makes sure that the page doesn't reload 
     // everytime the form gets submitted.
     handleSubmit(event) {
         alert('Your form was submitted')
         event.preventDefault();
+        var self = this;
     }
 
-    handleChange(event) {
-        var value = event.target.value;
-        this.setState({
-
-        })
-    }
     render() {
         return (
             <div className="signup">
-                <h2>Don't have an account? Create an account below.</h2>
+                <h2>Create an account below.</h2>
                 <form className="form-wrapper" onSubmit={this.handleSubmit}>
                     <label className="label">
                         <p>First name</p>
