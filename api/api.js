@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const sqlite = require("aa-sqlite")
 
 const
 {
@@ -13,33 +14,11 @@ const
 
 const
 {
-  doesUserExist
+  getUser
 } = require('./databasehelper.js');
 
 const app = express();
 const port = process.env.PORT || 4000;
-
-// to be replaced with sql once implemented
-const userList = [
-  {
-    userId: "123",
-    password: "test1",
-    name: "test1",
-    username: "test1"
-  },
-  {
-    userId: "456",
-    password: "test2",
-    name: "test2",
-    username: "test2"
-  },
-  {
-    userId: "789",
-    password: "testpass",
-    name: "testname",
-    username: "testuser"
-  }
-]
 
 // enable CORS
 app.use(cors({
@@ -91,24 +70,18 @@ const authMiddleware = function (req, res, next) {
 // validate user credentials
 app.post('/users/signin', async function (req, res)
 {
-  const user = req.body.username;
-  const pwd = req.body.password;
+  const username = req.body.username;
+  const password = req.body.password;
 
   // return 400 status if username/password is not exist
-  if (!user || !pwd)
+  if (!username || !password)
   {
     return handleResponse(req, res, 400, null, "Username and Password required.");
   }
 
-  let auth = await doesUserExist(user, pwd);
+  let userData = await getUser(username, password);
 
-  console.log('Auth is' + auth);
-
-  // SANITIZE INPUT (once we switch to grabing from sql)
-  const userData = userList.find(x => x.username === user && x.password === pwd);
-
-  // return 401 status if the credential is not matched
-  if (!userData)
+  if (userData == undefined)
   {
     return handleResponse(req, res, 401, null, "Username or Password is Wrong.");
   }
@@ -117,7 +90,7 @@ app.post('/users/signin', async function (req, res)
 
   const tokenObj = generateToken(userData);
 
-  const refreshToken = generateRefreshToken(userObj.userId);
+  const refreshToken = generateRefreshToken(userData.id);
 
   // refresh token list to manage the xsrf token
   refreshTokens[refreshToken] = tokenObj.xsrfToken;

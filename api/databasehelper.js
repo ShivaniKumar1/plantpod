@@ -1,44 +1,21 @@
 const sqlite3 = require('sqlite3').verbose();
+const sqlite = require("aa-sqlite")
 
-async function doesUserExist(username, password)
+async function getUser(username, password)
 {
-  let db = new sqlite3.Database('../database/plantpod.sqlite3', sqlite3.OPEN_READONLY, (err) =>
-  {
-    if (err)
-    {
-      return console.error(err.message);
-    }
-    console.log('Connected to db.');
-  });
+  await sqlite.open('../database/plantpod.sqlite3');
 
   // SANITIZE DATA
   let sql = 'SELECT * FROM Users WHERE user_name = \'' + username + '\' AND password = \'' + password +'\''
 
-  let userExists = await db.get(sql, (err, row) => {
-    if (err) {
-      return console.error(err.message);
-    }
-    if (row.id == undefined)
-      return false;
-
-    return true;
-  });
-
-  db.close((err) =>
-  {
-    if (err)
-    {
-      return console.error(err.message);
-    }
-    console.log('Close the database connection.');
-  });
-  return userExists;
-
+  r = await sqlite.get(sql);
+  console.log(r);
+  return r;
 }
 
 
 
 module.exports =
 {
-  doesUserExist
+  getUser
 }
