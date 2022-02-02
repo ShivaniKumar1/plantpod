@@ -2,11 +2,14 @@
 
 # Dependencies/Installations
 You most likely don't have to install these but just in case:\
-npm install bootstrap@4.0.0 —save\
+npm install bootstrap@4.0.0 --save\
 npm install reactstrap@5.0.0 react-popper@0.9.2\
 // above command enable us to make use of react component-based reimplementation of the various bootstrap components\
 npm install react-router-dom@4 --save
 
+If you are still getting issues, remove the node_modules folder and reinstall
+rm -r node_modules/
+node  install
 
 In the project directory, you can run:
 
