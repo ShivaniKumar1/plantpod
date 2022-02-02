@@ -68,7 +68,7 @@ const authMiddleware = function (req, res, next) {
 
 
 // validate user credentials
-app.post('/users/signin', async function (req, res)
+app.post('/users/login', async function (req, res)
 {
   const username = req.body.username;
   const password = req.body.password;
