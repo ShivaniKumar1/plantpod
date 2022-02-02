@@ -10,6 +10,8 @@ web/.pnp
 # production
 **/build/**
 
+**/.cache/**
+
 # misc
 .DS_Store
 .env.local
