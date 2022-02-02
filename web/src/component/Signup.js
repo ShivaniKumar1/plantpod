@@ -13,8 +13,7 @@ export default class Signup extends Component {
         };
         this.onSubmit = this.handleSubmit.bind(this);
     }
-    // This component makes sure that the page doesn't reload 
-    // everytime the form gets submitted.
+
     handleSubmit(event) {
         alert('Your form was submitted')
         event.preventDefault();
