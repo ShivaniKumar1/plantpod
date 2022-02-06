@@ -7,9 +7,19 @@ npm install reactstrap@5.0.0 react-popper@0.9.2\
 // above command enable us to make use of react component-based reimplementation of the various bootstrap components\
 npm install react-router-dom@4 --save
 
+-----------------------------
+
 If you are still getting issues, remove the node_modules folder and reinstall
+
 rm -r node_modules/
+
 node  install
+
+-----------------------------
+
+When pushing to prod, be sure to change the env file to hold the contents of envprod for both the api and web!
+
+-----------------------------
 
 In the project directory, you can run:
 
