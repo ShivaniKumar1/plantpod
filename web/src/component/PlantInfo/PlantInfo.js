@@ -21,7 +21,7 @@ const testData = [
     //tableBodyMaxHeight
   };
 
-export default function PlantInfo({ setToken }) {
+export default function PlantInfo() {
     return (
         <div className="plantInformation">
           <MUIDataTable
@@ -33,7 +33,3 @@ export default function PlantInfo({ setToken }) {
         </div>
     )
 }
-
-//Login.propTypes = {
-//    setToken: PropTypes.func.isRequired
-//};

@@ -1,4 +1,4 @@
-require('dotenv').config();
+const env = require('./env/env.json')
 
 const express = require('express');
 const cors = require('cors');
@@ -18,17 +18,17 @@ const
 } = require('./databasehelper.js');
 
 const app = express();
-const port = process.env.PORT || 4000;
+const port = env.PORT || 4000;
 
 // enable CORS
 app.use(cors({
-  origin: 'http://localhost:3000', // url of the frontend application
+  origin: env., // url of the frontend application
   credentials: true // set credentials true for secure httpOnly cookie
 }));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(cookieParser(env.COOKIE_SECRET));
 
 
 // middleware that checks if JWT token exists and verifies it if it does exist.

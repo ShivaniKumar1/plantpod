@@ -18,7 +18,3 @@ export default function Landing({ setToken }) {
         </div>
     )
 }
-
-//Login.propTypes = {
-//    setToken: PropTypes.func.isRequired
-//};

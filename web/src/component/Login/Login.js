@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { setToken } from './../util/JWTHelper';
 import './Login.css';
 
+const env = require('./../../env/env.json');
+
 async function loginUser(creds) {
-    return fetch('http://localhost:4000/users/login', {
+    return fetch(env.APIURL + '/users/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -11,9 +14,10 @@ async function loginUser(creds) {
         body: JSON.stringify(creds)
     })
     .then(data => data.json())
+
 }
 
-export default function Login({ setToken }) {
+export default function Login() {
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
 
@@ -23,7 +27,6 @@ export default function Login({ setToken }) {
             username: username,
             password: password
         });
-        console.log(tokenInfo.expiredAt);
         setToken(tokenInfo.token);
     }
 
@@ -46,7 +49,3 @@ export default function Login({ setToken }) {
         </div>
     )
 }
-
-Login.propTypes = {
-    setToken: PropTypes.func.isRequired
-};
