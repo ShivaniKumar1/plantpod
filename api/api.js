@@ -101,7 +101,7 @@ app.post('/users/login', async function (req, res)
 
   return handleResponse(req, res, 200,
   {
-    user: userObj,
+    username: username,
     token: tokenObj.token,
     expiredAt: tokenObj.expiredAt
   });
