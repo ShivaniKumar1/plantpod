@@ -22,7 +22,7 @@ const port = env.PORT || 4000;
 
 // enable CORS
 app.use(cors({
-  origin: env., // url of the frontend application
+  origin: env.WEBURL, // url of the frontend application
   credentials: true // set credentials true for secure httpOnly cookie
 }));
 
