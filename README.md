@@ -13,7 +13,7 @@ If you are still getting issues, remove the node_modules folder and reinstall
 
 rm -r node_modules/
 
-node  install
+npm install
 
 -----------------------------
 
