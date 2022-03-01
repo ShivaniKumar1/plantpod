@@ -14,7 +14,7 @@ const
 
 const
 {
-  getUser
+    getUser, createUser, getPlantData
 } = require('./databasehelper.js');
 
 const app = express();
@@ -39,9 +39,9 @@ const authMiddleware = function (req, res, next) {
 
   token = token.replace('Bearer ', '');
 
+  // get xsrf token from the header
   const xsrfToken = req.headers['x-xsrf-token'];
-  if (!xsrfToken)
-  {
+  if (!xsrfToken) {
     return handleResponse(req, res, 403);
   }
 
@@ -49,17 +49,18 @@ const authMiddleware = function (req, res, next) {
   const { signedCookies = {} } = req;
   const { refreshToken } = signedCookies;
 
-  if (!refreshToken || !(refreshToken in refreshTokens) || refreshTokens[refreshToken] !== xsrfToken)
-  {
+  if (!refreshToken || !(refreshToken in refreshTokens) || refreshTokens[refreshToken] !== xsrfToken) {
     return handleResponse(req, res, 401);
   }
 
-  verifyToken(token, xsrfToken, (err, payload) =>
-  {
+  // verify token with secret key and xsrf token
+  verifyToken(token, xsrfToken, (err, payload) => {
     if (err)
-      return handleResponse(req, res, 401);
-    else
     {
+        console.log("error verifying token:" + err);
+        return handleResponse(req, res, 401);
+    }
+    else {
       req.user = payload; //set the user to req so other routes can use it
       next();
     }
@@ -94,17 +95,34 @@ app.post('/users/login', async function (req, res)
 
   // refresh token list to manage the xsrf token
   refreshTokens[refreshToken] = tokenObj.xsrfToken;
-
-  // set cookies
   res.cookie('refreshToken', refreshToken, COOKIE_OPTIONS);
-  res.cookie('XSRF-TOKEN', tokenObj.xsrfToken);
 
   return handleResponse(req, res, 200,
   {
     username: username,
     token: tokenObj.token,
+    xsrf: tokenObj.xsrfToken,
+    refresh: refreshToken,
     expiredAt: tokenObj.expiredAt
   });
+});
+
+app.post('/users/signup', async function (req, res) {
+
+    const username = req.body.username;
+    const password = req.body.password;
+
+    // return 400 status if username/password is not exist
+    if (!username || !password)
+    {
+      return handleResponse(req, res, 400, null, "Username and Password required.");
+    }
+
+    let success = await createUser(username, password);
+
+    return handleResponse(req, res, 201);
+
+
 });
 
 
@@ -119,16 +137,22 @@ app.post('/users/logout', (req, res) =>
 // verify the token and return new tokens if it's valid
 app.post('/verifyToken', function (req, res) {
 
-  const { signedCookies = {} } = req;
-  const { refreshToken } = signedCookies;
+  const refreshToken = req.headers['refresh-token'];
 
   if (!refreshToken)
   {
     return handleResponse(req, res, 204);
   }
 
+
+
   // verify xsrf token
   const xsrfToken = req.headers['x-xsrf-token'];
+
+  console.log(token);
+  console.log(refreshtoken);
+  console.log(xsrfToken);
+
   if (!xsrfToken || !(refreshToken in refreshTokens) || refreshTokens[refreshToken] !== xsrfToken)
   {
     return handleResponse(req, res, 401);
@@ -155,12 +179,12 @@ app.post('/verifyToken', function (req, res) {
 
       // refresh token list to manage the xsrf token
       refreshTokens[refreshToken] = tokenObj.xsrfToken;
-      res.cookie('XSRF-TOKEN', tokenObj.xsrfToken);
 
       return handleResponse(req, res, 200,
       {
         user: userObj,
         token: tokenObj.token,
+        xsrf: tokenObj.xsrfToken,
         expiredAt: tokenObj.expiredAt
       });
     }
@@ -169,20 +193,13 @@ app.post('/verifyToken', function (req, res) {
 });
 
 
-// get list of the users
-app.get('/users/getList', authMiddleware, (req, res) =>
-{
-  const list = userList.map(x =>
-  {
-    const user = { ...x };
-    delete user.password;
-    return user;
-  });
 
-  return handleResponse(req, res, 200, { random: Math.random(), userList: list });
+app.post('/plantData/getAll', authMiddleware, async function (req, res) {
+    let plantData = await getPlantData();
+    console.log(plantData);
+    return handleResponse(req, res, 200, plantData);
 
 });
-
 
 app.listen(port, () =>
 {

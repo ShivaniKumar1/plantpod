@@ -9,7 +9,9 @@ async function loginUser(creds) {
     return fetch(env.APIURL + '/users/login', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'credentials': 'true',
+            'cors': 'true',
         },
         body: JSON.stringify(creds)
     })
@@ -27,7 +29,7 @@ export default function Login() {
             username: username,
             password: password
         });
-        setToken(tokenInfo.token);
+        //setToken(tokenInfo.token, tokenInfo.xsrf, tokenInfo.refresh);
     }
 
     return (

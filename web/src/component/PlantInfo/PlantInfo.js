@@ -1,14 +1,31 @@
 import React, { useState } from 'react';
 import styled from 'styled-components'
 import { useTable, useSortBy } from 'react-table'
+import { getToken, getXSRF, getRefresh } from './../util/JWTHelper';
 import './PlantInfo.css';
 
+const env = require('./../../env/env.json');
 
+async function getData() {
+    return fetch(env.APIURL + '/plantData/getAll', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + getToken(),
+            'x-xsrf-token': getXSRF(),
+            'refresh-token': getRefresh()
+        }
+    })
+    .then(data => console.log(data))
+
+
+}
 
 
 // Table taken from https://react-table.tanstack.com/docs/examples/sorting
 // Use that documentation as refernce when expanding
 export default function PlantInfo() {
+    getData();
     const columns = React.useMemo(
     () => [
       {
@@ -65,8 +82,6 @@ export default function PlantInfo() {
         useSortBy
       )
 
-      // We don't want to render all 2000 rows for this example, so cap
-      // it at 20 for this use case
       const firstPageRows = rows.slice(0, 20)
 
     return (

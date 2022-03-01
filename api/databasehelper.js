@@ -9,6 +9,33 @@ async function getUser(username, password)
   let sql = 'SELECT * FROM Users WHERE user_name = \'' + username + '\' AND password = \'' + password +'\''
 
   r = await sqlite.get(sql);
+  return r;
+}
+
+async function createUser(username, password)
+{
+  await sqlite.open('../database/plantpod.sqlite3');
+
+  // SANITIZE DATA
+  let sql = 'INSERT INTO Users VALUES (\'' + username + '\', \'' + password +'\');'
+
+  r = await sqlite.run(sql);
+  return r;
+}
+
+async function getPlantData()
+{
+  await sqlite.open('../database/plantpod.sqlite3');
+
+  // SANITIZE DATA
+  let sql = 'SELECT * FROM SensorData'
+
+  r = await sqlite.get(sql);
+
+  if (r == undefined)
+    r = {}
+
+  console.log("Plant Data:\n");
   console.log(r);
   return r;
 }
@@ -17,5 +44,7 @@ async function getUser(username, password)
 
 module.exports =
 {
-  getUser
+  getUser,
+  createUser,
+  getPlantData
 }

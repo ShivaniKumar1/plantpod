@@ -26,10 +26,7 @@ function generateToken(user)
 
   const u =
   {
-    userId: user.userId,
-    name: user.name,
-    username: user.username,
-    isAdmin: user.isAdmin
+    name: user.username,
   };
 
   // generat xsrf token and use it to generate access token
@@ -83,6 +80,9 @@ function handleResponse(req, res, statusCode, data, message)
 
   switch (statusCode)
   {
+    case 200:
+        const resObj = data || {};
+        return res.status(statusCode).json(resObj);
     case 204:
       return res.sendStatus(204);
     case 400:
