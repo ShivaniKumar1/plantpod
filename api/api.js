@@ -8,8 +8,7 @@ const sqlite = require("aa-sqlite")
 
 const
 {
-  refreshTokens, COOKIE_OPTIONS, generateToken, generateRefreshToken,
-  getCleanUser, verifyToken, clearTokens, handleResponse,
+  generateToken, getCleanUser, verifyToken, clearTokens, handleResponse,
 } = require('./util');
 
 const
@@ -28,33 +27,17 @@ app.use(cors({
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser(env.COOKIE_SECRET));
 
 
 // middleware that checks if JWT token exists and verifies it if it does exist.
 const authMiddleware = function (req, res, next) {
-  // check header or url parameters or post parameters for token
-  var token = req.headers['authorization'];
-  if (!token) return handleResponse(req, res, 401);
+    var token = req.headers['authorization'];
+    if (!token) return handleResponse(req, res, 401);
 
-  token = token.replace('Bearer ', '');
-
-  // get xsrf token from the header
-  const xsrfToken = req.headers['x-xsrf-token'];
-  if (!xsrfToken) {
-    return handleResponse(req, res, 403);
-  }
-
-  // verify xsrf token
-  const { signedCookies = {} } = req;
-  const { refreshToken } = signedCookies;
-
-  if (!refreshToken || !(refreshToken in refreshTokens) || refreshTokens[refreshToken] !== xsrfToken) {
-    return handleResponse(req, res, 401);
-  }
+    token = token.replace('Bearer ', '');
 
   // verify token with secret key and xsrf token
-  verifyToken(token, xsrfToken, (err, payload) => {
+  verifyToken(token, (err, payload) => {
     if (err)
     {
         console.log("error verifying token:" + err);
@@ -91,18 +74,10 @@ app.post('/users/login', async function (req, res)
 
   const tokenObj = generateToken(userData);
 
-  const refreshToken = generateRefreshToken(userData.id);
-
-  // refresh token list to manage the xsrf token
-  refreshTokens[refreshToken] = tokenObj.xsrfToken;
-  res.cookie('refreshToken', refreshToken, COOKIE_OPTIONS);
-
   return handleResponse(req, res, 200,
   {
     username: username,
     token: tokenObj.token,
-    xsrf: tokenObj.xsrfToken,
-    refresh: refreshToken,
     expiredAt: tokenObj.expiredAt
   });
 });
@@ -137,28 +112,13 @@ app.post('/users/logout', (req, res) =>
 // verify the token and return new tokens if it's valid
 app.post('/verifyToken', function (req, res) {
 
-  const refreshToken = req.headers['refresh-token'];
+    var token = req.headers['authorization'];
+    if (!token) return handleResponse(req, res, 401);
 
-  if (!refreshToken)
-  {
-    return handleResponse(req, res, 204);
-  }
+    token = token.replace('Bearer ', '');
 
 
-
-  // verify xsrf token
-  const xsrfToken = req.headers['x-xsrf-token'];
-
-  console.log(token);
-  console.log(refreshtoken);
-  console.log(xsrfToken);
-
-  if (!xsrfToken || !(refreshToken in refreshTokens) || refreshTokens[refreshToken] !== xsrfToken)
-  {
-    return handleResponse(req, res, 401);
-  }
-
-  verifyToken(refreshToken, '', (err, payload) =>   // verify refresh token
+  verifyToken(token, (err, payload) =>
   {
     if (err)
     {
@@ -177,15 +137,10 @@ app.post('/verifyToken', function (req, res) {
 
       const tokenObj = generateToken(userData);
 
-      // refresh token list to manage the xsrf token
-      refreshTokens[refreshToken] = tokenObj.xsrfToken;
-
       return handleResponse(req, res, 200,
       {
         user: userObj,
-        token: tokenObj.token,
-        xsrf: tokenObj.xsrfToken,
-        expiredAt: tokenObj.expiredAt
+        token: tokenObj.token
       });
     }
   });

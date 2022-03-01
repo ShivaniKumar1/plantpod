@@ -1,5 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 const sqlite = require("aa-sqlite")
+// https://www.npmjs.com/package/aa-sqlite
 
 async function getUser(username, password)
 {
@@ -19,7 +20,7 @@ async function createUser(username, password)
   // SANITIZE DATA
   let sql = 'INSERT INTO Users VALUES (\'' + username + '\', \'' + password +'\');'
 
-  r = await sqlite.run(sql);
+  r = await sqlite.push(sql, []);
   return r;
 }
 
@@ -30,7 +31,7 @@ async function getPlantData()
   // SANITIZE DATA
   let sql = 'SELECT * FROM SensorData'
 
-  r = await sqlite.get(sql);
+  r = await sqlite.get_all(sql);
 
   if (r == undefined)
     r = {}

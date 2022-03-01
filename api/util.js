@@ -7,17 +7,6 @@ const ms = require('ms');
 
 const dev = env.NODE_ENV !== 'production';
 
-// refresh token list to manage the xsrf token
-const refreshTokens = {};
-
-// cookie options to create refresh token
-const COOKIE_OPTIONS =
-{
-  // domain: "localhost",
-  httpOnly: true,
-  secure: !dev,
-  signed: true
-};
 
 // generate tokens and return it
 function generateToken(user)
@@ -29,34 +18,18 @@ function generateToken(user)
     name: user.username,
   };
 
-  // generat xsrf token and use it to generate access token
-  const xsrfToken = randtoken.generate(24);
-
-  // create private key by combining JWT secret and xsrf token
-  const privateKey = env.JWT_SECRET + xsrfToken;
-
   // generate access token and expiry date
-  const token = jwt.sign(u, privateKey, { expiresIn: env.ACCESS_TOKEN_LIFE });
+  const token = jwt.sign(u, env.JWT_SECRET, { expiresIn: env.ACCESS_TOKEN_LIFE });
 
   // expiry time of the access token
   const expiredAt = moment().add(ms(env.ACCESS_TOKEN_LIFE), 'ms').valueOf();
 
-  return { token, expiredAt, xsrfToken }
+  return { token, expiredAt }
 }
 
-// generate refresh token
-function generateRefreshToken(userId)
+function verifyToken(token, cb)
 {
-  if (!userId) return null;
-
-  return jwt.sign({ userId }, env.JWT_SECRET, { expiresIn: env.REFRESH_TOKEN_LIFE });
-}
-
-// verify access token and refresh token
-function verifyToken(token, xsrfToken = '', cb)
-{
-  const privateKey = env.JWT_SECRET + xsrfToken;
-  jwt.verify(token, privateKey, cb);
+  jwt.verify(token, env.JWT_SECRET, cb);
 }
 
 // return basic user details
@@ -117,20 +90,12 @@ function handleResponse(req, res, statusCode, data, message)
 // clear tokens from cookie
 function clearTokens(req, res)
 {
-  const { signedCookies = {} } = req;
-  const { refreshToken } = signedCookies;
-  delete refreshTokens[refreshToken];
-
-  res.clearCookie('XSRF-TOKEN');
-  res.clearCookie('refreshToken', COOKIE_OPTIONS);
+  
 }
 
 module.exports =
 {
-  refreshTokens,
-  COOKIE_OPTIONS,
   generateToken,
-  generateRefreshToken,
   verifyToken,
   getCleanUser,
   handleResponse,

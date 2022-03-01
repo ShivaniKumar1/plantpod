@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import styled from 'styled-components'
 import { useTable, useSortBy } from 'react-table'
 import { getToken, getXSRF, getRefresh } from './../util/JWTHelper';
@@ -7,16 +7,15 @@ import './PlantInfo.css';
 const env = require('./../../env/env.json');
 
 async function getData() {
-    return fetch(env.APIURL + '/plantData/getAll', {
+    return await fetch(env.APIURL + '/plantData/getAll', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + getToken(),
-            'x-xsrf-token': getXSRF(),
-            'refresh-token': getRefresh()
+            'Authorization': 'Bearer ' + getToken()
         }
     })
-    .then(data => console.log(data))
+    .then(res => res.json())
+    .then(json => { return json;})
 
 
 }
@@ -25,49 +24,66 @@ async function getData() {
 // Table taken from https://react-table.tanstack.com/docs/examples/sorting
 // Use that documentation as refernce when expanding
 export default function PlantInfo() {
-    getData();
+    const [loadingData, setLoadingData] = useState(true);
     const columns = React.useMemo(
     () => [
       {
         Header: 'Plant Information',
         columns: [
           {
-            Header: 'Header 1',
-            accessor: 'firstName',
+            Header: 'ID',
+            accessor: 'id',
           },
           {
-            Header: 'Header 2',
-            accessor: 'lastName',
+            Header: 'Date',
+            accessor: 'date',
           },
           {
-            Header: 'Header 3',
-            accessor: 'info1',
+            Header: 'CO2',
+            accessor: 'co2_level',
+          },
+          {
+            Header: 'PH',
+            accessor: 'pH_level',
+          },
+          {
+            Header: 'Pressure',
+            accessor: 'pressure',
+          },
+          {
+            Header: 'Soil Moisture',
+            accessor: 'soil_moisture',
+          },
+          {
+            Header: 'Temperature',
+            accessor: 'temperature',
+          },
+          {
+            Header: 'Picture Path',
+            accessor: 'picture_path',
           }
         ],
       }
     ],
-    []
-  )
-      const data = React.useMemo(
-      () => [
-        {
-          firstName: 'Hello',
-          lastName: 'World',
-          info1: 'test',
-        },
-        {
-          firstName: 'react-table',
-          lastName: 'rocks',
-          info1: 'test',
-        },
-        {
-          firstName: 'whatever',
-          lastName: 'you want',
-          info1: 'test',
-        },
-      ],
-      []
-    )
+    []);
+
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        async function load() {
+            var data = await getData();
+            console.log(data.data);
+            setData(data.data);
+            // you tell it that you had the result
+            setLoadingData(false);
+
+        }
+        if (loadingData) {
+          // if the result is not ready so you make the axios call
+          load();
+        }
+  }, []);
+
     const {
         getTableProps,
         getTableBodyProps,
@@ -80,9 +96,10 @@ export default function PlantInfo() {
           data,
         },
         useSortBy
-      )
+    );
 
       const firstPageRows = rows.slice(0, 20)
+      console.log(getData());
 
     return (
         <div className="plantInfo">
