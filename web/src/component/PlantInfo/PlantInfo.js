@@ -2,6 +2,8 @@ import React, { useMemo, useState, useEffect } from 'react';
 import styled from 'styled-components'
 import { useTable, useSortBy } from 'react-table'
 import { getToken, getXSRF, getRefresh } from './../util/JWTHelper';
+import { Button } from 'react-bootstrap';
+import CardTable from './CardTable.js';
 import './PlantInfo.css';
 
 const env = require('./../../env/env.json');
@@ -19,6 +21,9 @@ async function getData() {
 
 
 }
+
+
+
 
 
 // Table taken from https://react-table.tanstack.com/docs/examples/sorting
@@ -67,8 +72,18 @@ export default function PlantInfo() {
     ],
     []);
 
-    const [data, setData] = useState([]);
+    const [sendCardData, setSendCardData] = useState([]);
+    const [card1style, setCard1Style] = useState("hiddenCard1");
+    const showCard1 = (cd) => {
+      console.log("clicked");
+      setCard1Style("revealedCard1");
+      setSendCardData(cd);
+    }
+    const hideCard1 = () => {
+        setCard1Style("hiddenCard1");
+    }
 
+    const [data, setData] = useState([]);
     useEffect(() => {
         async function load() {
             var data = await getData();
@@ -76,35 +91,24 @@ export default function PlantInfo() {
             setData(data.data);
             // you tell it that you had the result
             setLoadingData(false);
-
         }
-        if (loadingData) {
-          // if the result is not ready so you make the axios call
-          load();
-        }
-  }, []);
+        if (loadingData) { load(); }
+    }, []);
 
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-      } = useTable(
-        {
-          columns,
-          data,
-        },
-        useSortBy
-    );
+    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow}
+        = useTable({columns, data}, useSortBy);
 
       const firstPageRows = rows.slice(0, 20)
       console.log(getData());
 
     return (
+
         <div className="plantInfo">
+            <div id={card1style}>
+                <CardTable cardData={sendCardData} hideCard={hideCard1}></CardTable>
+            </div>
             <p>Plant Info Table</p>
-            <table {...getTableProps()}>
+            <table {...getTableProps()} >
                 <thead>
                   {headerGroups.map(headerGroup => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
@@ -131,7 +135,7 @@ export default function PlantInfo() {
                     (row, i) => {
                       prepareRow(row);
                       return (
-                        <tr {...row.getRowProps()}>
+                        <tr {...row.getRowProps()} onClick={() => showCard1(row.original)}>
                           {row.cells.map(cell => {
                             return (
                               <td {...cell.getCellProps()}>{cell.render('Cell')}</td>

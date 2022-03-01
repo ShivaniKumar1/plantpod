@@ -16,3 +16,16 @@ td {
     border-bottom: 1px solid black;
     border-right: 1px solid black;
 }
+
+#hiddenCard1 {
+    position: fixed;
+    visibility: hidden;
+    background: white;
+}
+
+#revealedCard1 {
+    visibility: visible;
+    position: fixed;
+    margin: 50px 50px;
+    background: white;
+}

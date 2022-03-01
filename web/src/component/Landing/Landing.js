@@ -5,15 +5,17 @@ import logo from './plantlogo.png';
 import history from './../history/history'
 import './Landing.css';
 
+
+
 export default function Landing({ setToken }) {
     return (
         <div className="landingPage">
             <header className="App-header">
                 <p> Welcome PlantPod Team</p>
                 <img src={logo} className="App-logo" alt="logo" />
-                <Button variant="btn btn-success" onClick={() => history.push('/Login')} style={{color: '#7084a5'}} activeStyle={{color: '#acbcb2'}}>Login</Button>
-                <br></br>
-                <Button variant="btn btn-success" onClick={() => history.push('/Signup')} style={{color: '#7084a5'}} activeStyle={{color: '#acbcb2'}}>Signup</Button>
+                <div>
+                    <Button variant="btn btn-success" onClick={() => history.push('/Login')} >Login</Button><Button variant="btn btn-success" onClick={() => history.push('/Signup')} >Signup</Button>
+                </div>
             </header>
         </div>
     )
