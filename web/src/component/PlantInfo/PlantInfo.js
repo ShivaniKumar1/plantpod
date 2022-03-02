@@ -1,11 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import styled from 'styled-components'
 import { useTable, useSortBy, usePagination, useRowSelect } from 'react-table'
-<<<<<<< HEAD
 import { getToken } from './../util/JWTHelper';
-=======
-import { getToken, getXSRF, getRefresh } from './../util/JWTHelper';
->>>>>>> 71146ef7e5c6491b6452fd64dcaacff16decda25
 import { Button } from 'react-bootstrap';
 import CardTable from './CardTable.js';
 import './PlantInfo.css';

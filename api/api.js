@@ -13,8 +13,9 @@ const
 
 const
 {
-    getUser, createUser, getPlantData,
-    getAllNotesFromUser, getNote, createNote, editNote, deleteNote
+    getUser, createUser,
+    getPlantData, getLatestPlantData,
+    getAllNotesFromUser, getNote, getLatestNoteFromUser, createNote, editNote, deleteNote
 } = require('./databasehelper.js');
 
 const app = express();
@@ -160,9 +161,36 @@ app.post('/plantData/getAll', authMiddleware, async function (req, res) {
     return handleResponse(req, res, 200, plantData);
 });
 
+app.post('/plantData/getLatest', authMiddleware, async function (req, res) {
+    let plantData = await getLatestPlantData();
+    return handleResponse(req, res, 200, plantData);
+});
+
 
 // ------------------------------------------------------------ //
 
+
+app.post('/notes/getAll', authMiddleware, async function (req, res) {
+    const userID = req.body.id;
+
+    let notes = await getAllNotesFromUser(userID);
+    console.log(notes);
+    return handleResponse(req, res, 200, notes);
+});
+
+app.post('/notes/get', authMiddleware, async function (req, res) {
+    const noteID = req.body.noteID;
+
+    let note = await getNote(noteID);
+    return handleResponse(req, res, 200, note);
+});
+
+app.post('/notes/getLatest', authMiddleware, async function (req, res) {
+    const userID = req.body.id;
+
+    let note = await getLatestNoteFromUser(userID);
+    return handleResponse(req, res, 200, note);
+});
 
 app.post('/notes/newNote', authMiddleware, async function (req, res) {
     const note = req.body.note;
@@ -184,21 +212,6 @@ app.post('/notes/deleteNote', authMiddleware, async function (req, res) {
 
     let plantData = await deleteNote(noteID);
     return handleResponse(req, res, 200);
-});
-
-app.post('/notes/getAll', authMiddleware, async function (req, res) {
-    const userID = req.body.id;
-
-    let notes = await getAllNotesFromUser(userID);
-    console.log(notes);
-    return handleResponse(req, res, 200, notes);
-});
-
-app.post('/notes/get', authMiddleware, async function (req, res) {
-    const noteID = req.body.noteID;
-
-    let note = await getNote(noteID);
-    return handleResponse(req, res, 200, note);
 });
 
 

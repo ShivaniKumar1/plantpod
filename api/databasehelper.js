@@ -38,8 +38,19 @@ async function getPlantData()
   if (r == undefined)
     r = {}
 
-  console.log("Plant Data:\n");
-  console.log(r);
+  return r;
+}
+
+async function getLatestPlantData()
+{
+  await sqlite.open('../database/plantpod.sqlite3');
+
+  let sql = 'SELECT * FROM SensorData ORDER BY date DESC LIMIT 1'
+
+  r = await sqlite.get(sql, []);
+
+  if (r == undefined)
+    r = {}
 
   return r;
 }
@@ -67,7 +78,22 @@ async function getNote(id)
   // SANITIZE DATA
   let sql = 'SELECT * FROM Note WHERE id = ?'
 
-  r = await sqlite.get_all(sql, [id]);
+  r = await sqlite.get(sql, [id]);
+
+  if (r == undefined)
+    r = {}
+
+  return r;
+}
+
+async function getLatestNoteFromUser(userID)
+{
+  await sqlite.open('../database/plantpod.sqlite3');
+
+  // SANITIZE DATA
+  let sql = 'SELECT * FROM Notes WHERE id = ? ORDER BY date DESC LIMIT 1'
+
+  r = await sqlite.get(sql, [userID]);
 
   if (r == undefined)
     r = {}
@@ -116,10 +142,13 @@ module.exports =
 {
   getUser,
   createUser,
+
   getPlantData,
+  getLatestPlantData,
 
   getAllNotesFromUser,
   getNote,
+  getLatestNoteFromUser,
   createNote,
   editNote,
   deleteNote

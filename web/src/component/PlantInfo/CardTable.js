@@ -11,18 +11,20 @@ export default function Child({cardData, hideCard}) {
           <Row>
             <Col xs={6}>
                 <table>
-                    <tr>
-                        <th class = "nameCol">ID</th>
-                        <th class = "dataCol">{cardData.id}</th>
-                    </tr>
-                    <tr>
-                        <th class = "nameCol">Date</th>
-                        <th class = "dataCol">{cardData.date}</th>
-                    </tr>
-                    <tr>
-                        <th class = "nameCol">CO2_Level</th>
-                        <th class = "dataCol">{cardData.co2_level}</th>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <th className="nameCol">ID</th>
+                            <th className="dataCol">{cardData.id}</th>
+                        </tr>
+                        <tr>
+                            <th className="nameCol">Date</th>
+                            <th className="dataCol">{cardData.date}</th>
+                        </tr>
+                        <tr>
+                            <th className="nameCol">CO2_Level</th>
+                            <th className="dataCol">{cardData.co2_level}</th>
+                        </tr>
+                    </tbody>
                 </table>
             </Col>
             <Col xs={6}>Note Box Here</Col>
