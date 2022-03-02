@@ -13,7 +13,8 @@ const
 
 const
 {
-    getUser, createUser, getPlantData
+    getUser, createUser, getPlantData,
+    getAllNotesFromUser, getNote, createNote, editNote, deleteNote
 } = require('./databasehelper.js');
 
 const app = express();
@@ -49,6 +50,47 @@ const authMiddleware = function (req, res, next) {
     }
   });
 }
+
+// verify the token and return new tokens if it's valid
+app.post('/verifyToken', function (req, res) {
+
+    var token = req.headers['authorization'];
+    if (!token) return handleResponse(req, res, 401);
+
+    token = token.replace('Bearer ', '');
+
+
+  verifyToken(token, (err, payload) =>
+  {
+    if (err)
+    {
+      return handleResponse(req, res, 401);
+    }
+    else
+    {
+      const userData = userList.find(x => x.userId === payload.userId);
+
+      if (!userData)
+      {
+        return handleResponse(req, res, 401);
+      }
+
+      const userObj = getCleanUser(userData);
+
+      const tokenObj = generateToken(userData);
+
+      return handleResponse(req, res, 200,
+      {
+        user: userObj,
+        token: tokenObj.token
+      });
+    }
+  });
+
+});
+
+
+// ------------------------------------------------------------ //
 
 
 // validate user credentials
@@ -100,7 +142,6 @@ app.post('/users/signup', async function (req, res) {
 
 });
 
-
 // handle user logout
 app.post('/users/logout', (req, res) =>
 {
@@ -109,52 +150,55 @@ app.post('/users/logout', (req, res) =>
 });
 
 
-// verify the token and return new tokens if it's valid
-app.post('/verifyToken', function (req, res) {
-
-    var token = req.headers['authorization'];
-    if (!token) return handleResponse(req, res, 401);
-
-    token = token.replace('Bearer ', '');
-
-
-  verifyToken(token, (err, payload) =>
-  {
-    if (err)
-    {
-      return handleResponse(req, res, 401);
-    }
-    else
-    {
-      const userData = userList.find(x => x.userId === payload.userId);
-
-      if (!userData)
-      {
-        return handleResponse(req, res, 401);
-      }
-
-      const userObj = getCleanUser(userData);
-
-      const tokenObj = generateToken(userData);
-
-      return handleResponse(req, res, 200,
-      {
-        user: userObj,
-        token: tokenObj.token
-      });
-    }
-  });
-
-});
-
+// ------------------------------------------------------------ //
 
 
 app.post('/plantData/getAll', authMiddleware, async function (req, res) {
     let plantData = await getPlantData();
     console.log(plantData);
     return handleResponse(req, res, 200, plantData);
-
 });
+
+
+// ------------------------------------------------------------ //
+
+
+app.post('/notes/newNote', authMiddleware, async function (req, res) {
+    const note = req.body.Note;
+
+    let plantData = await createNote();
+    console.log(plantData);
+    return handleResponse(req, res, 200, plantData);
+});
+
+app.post('/notes/updateNote', authMiddleware, async function (req, res) {
+    const note = req.body.Note;
+
+    let plantData = await editNote();
+    return handleResponse(req, res, 200, plantData);
+});
+
+app.post('/notes/deleteNote', authMiddleware, async function (req, res) {
+    const noteID = req.body.NoteID;
+
+    let plantData = await deleteNote(noteID);
+    return handleResponse(req, res, 200, plantData);
+});
+
+app.post('/notes/getAll', authMiddleware, async function (req, res) {
+    const userID = req.body.UserID;
+
+    let plantData = await getAllNotesFromUser(userID);
+    return handleResponse(req, res, 200, plantData);
+});
+
+app.post('/notes/get', authMiddleware, async function (req, res) {
+    const noteID = req.body.NoteID;
+
+    let plantData = await getNote(noteID);
+    return handleResponse(req, res, 200, plantData);
+});
+
 
 app.listen(port, () =>
 {
