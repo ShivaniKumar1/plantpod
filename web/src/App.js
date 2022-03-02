@@ -9,6 +9,7 @@ import PlantInfo from './component/PlantInfo/PlantInfo';
 
 import AuthHelper from './component/util/AuthHelper';
 import history from './component/history/history';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component {
     render() {

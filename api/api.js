@@ -13,7 +13,8 @@ const
 
 const
 {
-    getUser, createUser, getPlantData
+    getUser, createUser, getPlantData,
+    getAllNotesFromUser, getNote, createNote, editNote, deleteNote
 } = require('./databasehelper.js');
 
 const app = express();
@@ -49,65 +50,6 @@ const authMiddleware = function (req, res, next) {
     }
   });
 }
-
-
-// validate user credentials
-app.post('/users/login', async function (req, res)
-{
-  const username = req.body.username;
-  const password = req.body.password;
-
-  // return 400 status if username/password is not exist
-  if (!username || !password)
-  {
-    return handleResponse(req, res, 400, null, "Username and Password required.");
-  }
-
-  let userData = await getUser(username, password);
-
-  if (userData == undefined)
-  {
-    return handleResponse(req, res, 401, null, "Username or Password is Wrong.");
-  }
-
-  const userObj = getCleanUser(userData);
-
-  const tokenObj = generateToken(userData);
-
-  return handleResponse(req, res, 200,
-  {
-    username: username,
-    token: tokenObj.token,
-    expiredAt: tokenObj.expiredAt
-  });
-});
-
-app.post('/users/signup', async function (req, res) {
-
-    const username = req.body.username;
-    const password = req.body.password;
-
-    // return 400 status if username/password is not exist
-    if (!username || !password)
-    {
-      return handleResponse(req, res, 400, null, "Username and Password required.");
-    }
-
-    let success = await createUser(username, password);
-
-    return handleResponse(req, res, 201);
-
-
-});
-
-
-// handle user logout
-app.post('/users/logout', (req, res) =>
-{
-  clearTokens(req, res);
-  return handleResponse(req, res, 204);
-});
-
 
 // verify the token and return new tokens if it's valid
 app.post('/verifyToken', function (req, res) {
@@ -148,13 +90,117 @@ app.post('/verifyToken', function (req, res) {
 });
 
 
+// ------------------------------------------------------------ //
+
+
+// validate user credentials
+app.post('/users/login', async function (req, res)
+{
+  const username = req.body.username;
+  const password = req.body.password;
+
+  // return 400 status if username/password is not exist
+  if (!username || !password)
+  {
+    return handleResponse(req, res, 400, null, "Username and Password required.");
+  }
+
+  let userData = await getUser(username, password);
+
+  if (userData == undefined)
+  {
+    return handleResponse(req, res, 401, null, "Username or Password is Wrong.");
+  }
+
+  const userObj = getCleanUser(userData);
+
+  const tokenObj = generateToken(userData);
+
+  return handleResponse(req, res, 200,
+  {
+    username: username,
+    id: userData.id,
+    token: tokenObj.token,
+    expiredAt: tokenObj.expiredAt
+  });
+});
+
+app.post('/users/signup', async function (req, res) {
+
+    const username = req.body.username;
+    const password = req.body.password;
+
+    // return 400 status if username/password is not exist
+    if (!username || !password)
+    {
+      return handleResponse(req, res, 400, null, "Username and Password required.");
+    }
+
+    let success = await createUser(username, password);
+
+    return handleResponse(req, res, 201);
+
+
+});
+
+// handle user logout
+app.post('/users/logout', (req, res) =>
+{
+  clearTokens(req, res);
+  return handleResponse(req, res, 204);
+});
+
+
+// ------------------------------------------------------------ //
+
 
 app.post('/plantData/getAll', authMiddleware, async function (req, res) {
     let plantData = await getPlantData();
     console.log(plantData);
     return handleResponse(req, res, 200, plantData);
-
 });
+
+
+// ------------------------------------------------------------ //
+
+
+app.post('/notes/newNote', authMiddleware, async function (req, res) {
+    const note = req.body.note;
+
+    let plantData = await createNote();
+    console.log(plantData);
+    return handleResponse(req, res, 200);
+});
+
+app.post('/notes/updateNote', authMiddleware, async function (req, res) {
+    const note = req.body.note;
+
+    let plantData = await editNote();
+    return handleResponse(req, res, 200);
+});
+
+app.post('/notes/deleteNote', authMiddleware, async function (req, res) {
+    const noteID = req.body.noteID;
+
+    let plantData = await deleteNote(noteID);
+    return handleResponse(req, res, 200);
+});
+
+app.post('/notes/getAll', authMiddleware, async function (req, res) {
+    const userID = req.body.id;
+
+    let notes = await getAllNotesFromUser(userID);
+    console.log(notes);
+    return handleResponse(req, res, 200, notes);
+});
+
+app.post('/notes/get', authMiddleware, async function (req, res) {
+    const noteID = req.body.noteID;
+
+    let note = await getNote(noteID);
+    return handleResponse(req, res, 200, note);
+});
+
 
 app.listen(port, () =>
 {

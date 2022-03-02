@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { setToken } from './../util/JWTHelper';
+import { setToken, setUserInfo } from './../util/JWTHelper';
 import './Login.css';
 
 const env = require('./../../env/env.json');
@@ -28,6 +28,8 @@ export default function Login() {
             password: password
         });
         setToken(tokenInfo.token);
+        setUserInfo({"username": tokenInfo.username, "id":tokenInfo.id });
+
     }
 
     return (
