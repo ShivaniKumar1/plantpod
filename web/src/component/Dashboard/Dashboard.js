@@ -55,13 +55,12 @@ export default function Dash() {
         <Container>
           <Row>
             <Col>
-              <Row>UserName/logout here</Row>
               <Row>
-              <input
-                  type="text"
-                  value={latestNote.note}
-                  id="latestUserNoteBox"
-                />
+                <Col>Welcome back {getUserInfo().username}</Col>
+                <Col md="auto"><Button>Logout</Button></Col>
+              </Row>
+              <Row>
+                <textarea value={latestNote.note}></textarea>
               </Row>
             </Col>
             <Col>

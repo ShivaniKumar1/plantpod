@@ -138,7 +138,6 @@ export default function PlantInfo() {
         usePagination,
         hooks => {
               hooks.visibleColumns.push(columns => [
-                // Let's make a column for selection
                 {
                   id: 'selection',
                   // The header can use the table's getToggleAllRowsSelectedProps method
