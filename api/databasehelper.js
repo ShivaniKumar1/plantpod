@@ -26,14 +26,29 @@ async function createUser(username, password)
   return r;
 }
 
-async function getPlantData()
+async function getAllPlantData()
 {
   await sqlite.open('../database/plantpod.sqlite3');
 
   // SANITIZE DATA
-  let sql = 'SELECT * FROM SensorData'
+  let sql = 'SELECT * FROM SensorData WHERE id = ?'
 
-  r = await sqlite.get_all(sql);
+  r = await sqlite.get(sql, [id]);
+
+  if (r == undefined)
+    r = {}
+
+  return r;
+}
+
+async function getPlantData(id)
+{
+  await sqlite.open('../database/plantpod.sqlite3');
+
+  // SANITIZE DATA
+  let sql = 'SELECT * FROM SensorData WHERE id = ?'
+
+  r = await sqlite.get(sql, [id]);
 
   if (r == undefined)
     r = {}
@@ -108,7 +123,7 @@ async function createNote(note)
   // SANITIZE DATA
   let sql = 'INSERT INTO Notes (user_id, sensor_data_id, note, date) VALUES (?, ?, ?, ?)'
 
-  r = await sqlite.push(sql, [note.UserID, note.SensorDataID, note.Note, new Date().toLocaleString()]);
+  r = await sqlite.push(sql, [note.userID, note.sensorDataID, note.note, new Date().toLocaleString()]);
 
   return true;
 }
@@ -117,10 +132,13 @@ async function editNote(note)
 {
   await sqlite.open('../database/plantpod.sqlite3');
 
+  console.log(note);
   // SANITIZE DATA
   let sql = 'UPDATE Notes SET note = ?, date = ? where id = ?'
 
-  r = await sqlite.push(sql, [note.Note, new Date().toLocaleString(), note.ID]);
+  r = await sqlite.push(sql, [note.note, new Date().toLocaleString(), note.id]);
+  console.log(r);
+  sqlite.close();
 
   return true;
 }

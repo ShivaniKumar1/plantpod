@@ -11,20 +11,23 @@ import Usernotes from './component/Usernotes/Usernotes';
 import AuthHelper from './component/util/AuthHelper';
 import history from './component/history/history';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 
 class App extends Component {
     render() {
         return (
-            <Router history = { history }>
-                <Switch>
-                    <Route path = "/" exact component = { Landing } />
-                    <Route path = "/Login" component = { Login } />
-                    <Route path = "/Signup" component = { Signup } />
-                    <Route path = "/Dashboard" render = { props => <AuthHelper><Dashboard/></AuthHelper>} />
-                    <Route path = "/PlantInfo" render = { props => <AuthHelper><PlantInfo/></AuthHelper>} />
-                    <Route path = "/Usernotes" render = { props => <AuthHelper><Usernotes/></AuthHelper>} />
-                </Switch>
-            </Router>
+            <div className="background">
+                <Router history = { history }>
+                    <Switch>
+                        <Route path = "/" exact component = { Landing } />
+                        <Route path = "/Login" component = { Login } />
+                        <Route path = "/Signup" component = { Signup } />
+                        <Route path = "/Dashboard" render = { props => <AuthHelper><Dashboard/></AuthHelper>} />
+                        <Route path = "/PlantInfo" render = { props => <AuthHelper><PlantInfo/></AuthHelper>} />
+                        <Route path = "/Usernotes" render = { props => <AuthHelper><Usernotes/></AuthHelper>} />
+                    </Switch>
+                </Router>
+            </div>
         );
     }
 }

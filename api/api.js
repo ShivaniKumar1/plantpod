@@ -33,6 +33,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // middleware that checks if JWT token exists and verifies it if it does exist.
 const authMiddleware = function (req, res, next) {
+    console.log("Received request needing auth.");
+
     var token = req.headers['authorization'];
     if (!token) return handleResponse(req, res, 401);
 
@@ -156,8 +158,15 @@ app.post('/users/logout', (req, res) =>
 
 
 app.post('/plantData/getAll', authMiddleware, async function (req, res) {
-    let plantData = await getPlantData();
+    let plantData = await getAllPlantData();
     console.log(plantData);
+    return handleResponse(req, res, 200, plantData);
+});
+
+app.post('/plantData/get', authMiddleware, async function (req, res) {
+    const plantID = req.body.id;
+
+    let plantData = await getPlantData(plantID);
     return handleResponse(req, res, 200, plantData);
 });
 
@@ -201,9 +210,9 @@ app.post('/notes/newNote', authMiddleware, async function (req, res) {
 });
 
 app.post('/notes/updateNote', authMiddleware, async function (req, res) {
-    const note = req.body.note;
+    const note = req.body;
 
-    let plantData = await editNote();
+    let plantData = await editNote(note);
     return handleResponse(req, res, 200);
 });
 
