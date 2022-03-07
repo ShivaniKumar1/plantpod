@@ -14,7 +14,7 @@ const
 const
 {
     getUser, createUser,
-    getPlantData, getLatestPlantData,
+    getPlantData, getLatestPlantData, getAllPlantData,
     getAllNotesFromUser, getNote, getLatestNoteFromUser, createNote, editNote, deleteNote
 } = require('./databasehelper.js');
 

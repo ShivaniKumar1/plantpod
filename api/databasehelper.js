@@ -31,9 +31,9 @@ async function getAllPlantData()
   await sqlite.open('../database/plantpod.sqlite3');
 
   // SANITIZE DATA
-  let sql = 'SELECT * FROM SensorData WHERE id = ?'
+  let sql = 'SELECT * FROM SensorData';
 
-  r = await sqlite.get(sql, [id]);
+  r = await sqlite.get_all(sql, []);
 
   if (r == undefined)
     r = {}
@@ -162,6 +162,7 @@ module.exports =
   createUser,
 
   getPlantData,
+  getAllPlantData,
   getLatestPlantData,
 
   getAllNotesFromUser,

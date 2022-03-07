@@ -51,7 +51,7 @@ export default function Dash() {
     }, []);
 
   return (
-    <div className="Dash">
+    <div className="content">
         <Container>
           <Row>
             <Col>

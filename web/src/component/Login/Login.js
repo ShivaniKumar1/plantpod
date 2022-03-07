@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { setToken, setUserInfo } from './../util/JWTHelper';
+import history from './../history/history'
 import './Login.css';
 
 const env = require('./../../env/env.json');
@@ -45,7 +46,7 @@ export default function Login() {
                     <input type="password" onChange={e => setPassword(e.target.value)}/>
                 </label>
                 <div className="button">
-                    <button type="submit">Submit</button>
+                    <button type="submit" onClick={() => history.push('/Dashboard')}>Submit</button>
                 </div>
             </form>
         </div>

@@ -2,7 +2,7 @@ import React from 'react'
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import './PlantInfo.css';
 
-export default function Child({cardData, hideCard}) {
+export default function CardTable({cardData, hideCard}) {
     console.log(cardData);
     return (
         <Container>

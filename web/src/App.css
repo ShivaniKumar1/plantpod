@@ -4,7 +4,22 @@
     align-items: center;
     background: #839c8e;
 
+
+    display: table;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+
+
+
  }
+
+.positioning {
+    display: table-cell;
+    vertical-align: middle;
+}
 
 .content {
     display: flex;
@@ -14,6 +29,10 @@
     box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     margin: 50px;
     padding: 20px;
-    border-radius: 25px;
+    border-radius: 20px;
+
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
 
 }

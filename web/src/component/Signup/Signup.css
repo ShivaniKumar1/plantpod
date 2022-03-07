@@ -1,3 +1,7 @@
 .Signup {
     text-align: center;
   }
+
+  .Navbar {
+      visibility: hidden;
+  }
