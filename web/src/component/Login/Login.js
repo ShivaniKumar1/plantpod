@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { setToken, setUserInfo } from './../util/JWTHelper';
 import history from './../history/history'
-import './Login.css';
 
 const env = require('./../../env/env.json');
 
@@ -30,6 +29,8 @@ export default function Login() {
         });
         setToken(tokenInfo.token);
         setUserInfo({"username": tokenInfo.username, "id":tokenInfo.id });
+        // Need to add a case if login fails
+        history.push('/Dashboard');
 
     }
 
@@ -46,7 +47,7 @@ export default function Login() {
                     <input type="password" onChange={e => setPassword(e.target.value)}/>
                 </label>
                 <div className="button">
-                    <button type="submit" onClick={() => history.push('/Dashboard')}>Submit</button>
+                    <button type="submit">Submit</button>
                 </div>
             </form>
         </div>

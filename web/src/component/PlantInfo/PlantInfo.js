@@ -4,7 +4,6 @@ import { useTable, useSortBy, usePagination, useRowSelect } from 'react-table'
 import { getToken } from './../util/JWTHelper';
 import { Button } from 'react-bootstrap';
 import CardTable from './CardTable.js';
-import './PlantInfo.css';
 
 const env = require('./../../env/env.json');
 
@@ -70,17 +69,6 @@ export default function PlantInfo() {
       }
     ],
     []);
-
-    const [sendCardData, setSendCardData] = useState([]);
-    const [card1style, setCard1Style] = useState("hiddenCard1");
-    const showCard1 = (cd) => {
-      console.log("clicked");
-      setCard1Style("revealedCard1");
-      setSendCardData(cd);
-    }
-    const hideCard1 = () => {
-        setCard1Style("hiddenCard1");
-    }
 
     const [data, setData] = useState([]);
     useEffect(() => {
@@ -162,11 +150,54 @@ export default function PlantInfo() {
          )
 
 
+    const [sendCardData, setSendCardData] = useState([]);
+    const [card1style, setCard1Style] = useState("hiddenCard1");
+    const showCard1 = (cd) => {
+      setCard1Style("revealedCard1");
+      setSendCardData(cd);
+      addCard();
+    }
+    const hideCard1 = () => {
+       setCard1Style("hiddenCard1");
+    }
+    let compareCard1 = undefined;
+    let compareCard2 = undefined;
+    const compareCards = (cd) => {
+      if (compareCard1 == undefined)
+        compareCard1 = cd;
+      else if (compareCard2 == undefined) {
+        compareCard2 = cd;
+        setSendCardData(cardDiff());
+      }
+      else
+        console.log("You've done something wrong :( ");
+    }
+    const cardDiff = () => {
+      let cdDiff = {
+        id: "~",
+        date: "~",
+        co2_level: compareCard1.co2_level - compareCard1.co2_level,
+        pH_level: compareCard1.pH_level - compareCard1.pH_level,
+        pressure: compareCard1.pressure - compareCard1.pressure,
+        soil_moisture: compareCard1.soil_moisture - compareCard1.soil_moisture,
+        temperature: compareCard1.temperature - compareCard1.temperature
+      }
+      return cdDiff;
+    }
+    const [cards, setCards] = useState(["Sample Component"]);
+    function addCard() {
+
+      setCards([...cards, "Sample Component"])
+
+    }
+
     return (
 
         <div className="plantInfo">
             <div id={card1style}>
-                <CardTable cardData={sendCardData} hideCard={hideCard1}></CardTable>
+                <CardTable cardData={sendCardData} hideCard={hideCard1}/>
+                {cards.map((item, i) => ( <CardTable cardData={sendCardData} hideCard={hideCard1}
+                  compareCard={compareCards}/> ))}
             </div>
             <p>Plant Info Table</p>
 

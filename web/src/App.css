@@ -1,3 +1,5 @@
+/* General CSS */
+
 .background {
     display: flex;
     flex-direction: column;
@@ -11,9 +13,6 @@
     left: 0;
     height: 100%;
     width: 100%;
-
-
-
  }
 
 .positioning {
@@ -22,6 +21,7 @@
 }
 
 .content {
+    position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -31,8 +31,156 @@
     padding: 20px;
     border-radius: 20px;
 
-    margin-left: auto;
-    margin-right: auto;
-    width: 70%;
+    width: auto;
 
+    pointer-events: auto;
 }
+
+
+/* Landing Page */
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #1d2228;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+button {
+  border: 2px solid white;
+  background-color: #1d2228;
+  color: white;
+  margin: 10px 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:active {
+  border: 2px solid white;
+  background-color: #4CAF50;
+  color: white;
+  margin: 10px 10px;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+
+/* Usernotes Page */
+
+.Usernotes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #acbcb2;
+ }
+
+table {
+    border-spacing: 0;
+    border: 1px solid black;
+}
+
+th,
+td {
+    margin: 0;
+    padding: 0.5rem;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+
+#hiddenCard1 {
+    position: fixed;
+    visibility: hidden;
+    background: white;
+}
+
+#revealedCard1 {
+    visibility: visible;
+    position: fixed;
+    margin: 50px 50px;
+    background: white;
+}
+
+
+/* Signup Page */
+
+.Signup {
+    text-align: center;
+  }
+
+
+/* PlantInfo Page */
+
+  .plantInfo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+   }
+
+  table {
+      border-spacing: 0;
+      border: 1px solid black;
+  }
+
+  th,
+  td {
+      margin: 0;
+      padding: 0.5rem;
+      border-bottom: 1px solid black;
+      border-right: 1px solid black;
+  }
+
+  #hiddenCard1 {
+      position: fixed;
+      visibility: hidden;
+      background-color: transparent;
+  }
+
+  #revealedCard1 {
+      visibility: visible;
+      position: fixed;
+      margin: 50px 50px;
+      background-color: transparent;
+      pointer-events: none;
+  }
+
+
+/* Navbar Component */
+
+#bootstrap-overrides .Navbar {
+    box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    margin: 0px;
+    position: fixed;
+    visibility: visible;
+}
+
+#bootstrap-overrides .button {
+    color: black;
+    margin: 20px;
+    background-color: transparent;
+}
+
+
+/* Login Page */
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+ }

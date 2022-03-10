@@ -2,7 +2,6 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { getToken, getUserInfo } from './../util/JWTHelper';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import CardTable from './../PlantInfo/CardTable.js';
-import './Usernotes.css';
 
 const env = require('./../../env/env.json');
 

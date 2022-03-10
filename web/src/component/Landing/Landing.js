@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import logo from './plantlogo.png';
 import history from './../history/history'
-import './Landing.css';
 
 
 

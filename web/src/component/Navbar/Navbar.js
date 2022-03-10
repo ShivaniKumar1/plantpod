@@ -3,7 +3,6 @@ import { getToken, getUserInfo } from './../util/JWTHelper';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import history from './../history/history'
 import homeImg from './homeImg.png';
-import './Navbar.css';
 
 const env = require('./../../env/env.json');
 

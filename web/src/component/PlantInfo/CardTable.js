@@ -1,11 +1,15 @@
 import React from 'react'
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import './PlantInfo.css';
+import Draggable from 'react-draggable';
 
-export default function CardTable({cardData, hideCard}) {
+export default function CardTable({cardData, hideCard, compareCard}) {
     console.log(cardData);
     return (
-        <Container>
+      <Draggable>
+        <Container className="content">
+          <Row>
+            <Col><Button primary onClick={() => compareCard(cardData)}>Compare</Button></Col>
+          </Row>
           <Row>
             <Col><img src="https://via.placeholder.com/140x100" alt="Plant Image"></img></Col>
           </Row>
@@ -35,5 +39,6 @@ export default function CardTable({cardData, hideCard}) {
             <Col>Save Note. Delete Note. Undo Changes</Col>
           </Row>
         </Container>
+      </Draggable>
     )
 }
