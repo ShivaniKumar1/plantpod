@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import styled from 'styled-components'
 import { useTable, useSortBy, usePagination, useRowSelect } from 'react-table'
 import { getToken } from './../util/JWTHelper';
@@ -82,6 +83,8 @@ export default function PlantInfo() {
         if (loadingData) { load(); }
     }, []);
 
+
+
     const IndeterminateCheckbox = React.forwardRef(
       ({ indeterminate, ...rest }, ref) => {
         const defaultRef = React.useRef()
@@ -139,7 +142,7 @@ export default function PlantInfo() {
                   // to the render a checkbox
                   Cell: ({ row }) => (
                     <div>
-                      <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+                      <IndeterminateCheckbox onClick={(e) => {changeChartData(e.target.checked, row.original)}}{...row.getToggleRowSelectedProps()} />
                     </div>
                   ),
                 },
@@ -154,7 +157,7 @@ export default function PlantInfo() {
     const [card1style, setCard1Style] = useState("hiddenCard1");
     const showCard1 = (cd) => {
       setCard1Style("revealedCard1");
-      setSendCardData(cd);
+      setSendCardData([...sendCardData, cd]);
       addCard();
     }
     const hideCard1 = () => {
@@ -163,11 +166,13 @@ export default function PlantInfo() {
     let compareCard1 = undefined;
     let compareCard2 = undefined;
     const compareCards = (cd) => {
-      if (compareCard1 == undefined)
+      if (compareCard1 === undefined)
         compareCard1 = cd;
-      else if (compareCard2 == undefined) {
+      else if (compareCard2 === undefined) {
         compareCard2 = cd;
-        setSendCardData(cardDiff());
+        showCard1(cardDiff());
+        compareCard1 = undefined;
+        compareCard2 = undefined;
       }
       else
         console.log("You've done something wrong :( ");
@@ -176,18 +181,33 @@ export default function PlantInfo() {
       let cdDiff = {
         id: "~",
         date: "~",
-        co2_level: compareCard1.co2_level - compareCard1.co2_level,
-        pH_level: compareCard1.pH_level - compareCard1.pH_level,
-        pressure: compareCard1.pressure - compareCard1.pressure,
-        soil_moisture: compareCard1.soil_moisture - compareCard1.soil_moisture,
-        temperature: compareCard1.temperature - compareCard1.temperature
+        co2_level: compareCard1.co2_level - compareCard2.co2_level,
+        pH_level: compareCard1.pH_level - compareCard2.pH_level,
+        pressure: compareCard1.pressure - compareCard2.pressure,
+        soil_moisture: compareCard1.soil_moisture - compareCard2.soil_moisture,
+        temperature: compareCard1.temperature - compareCard2.temperature,
+        comparisonData: true
       }
       return cdDiff;
     }
-    const [cards, setCards] = useState(["Sample Component"]);
+    const [cards, setCards] = useState([]);
     function addCard() {
+      setCards([...cards, "Sample Component"]);
 
-      setCards([...cards, "Sample Component"])
+    }
+
+    const [chartData, setChartData] = useState([]);
+    const changeChartData = (add, row) => {
+      console.log("row is + " + row);
+      console.log(row);
+      setChartData(oldArray => [...oldArray, row]);
+      console.log(chartData);
+      /*if (add)
+      {
+        setChartData(chartData.push(row));
+        console.log(chartData);
+      }
+      */
 
     }
 
@@ -195,8 +215,7 @@ export default function PlantInfo() {
 
         <div className="plantInfo">
             <div id={card1style}>
-                <CardTable cardData={sendCardData} hideCard={hideCard1}/>
-                {cards.map((item, i) => ( <CardTable cardData={sendCardData} hideCard={hideCard1}
+                {cards.map((item, i) => ( <CardTable cardData={sendCardData[i]} hideCard={hideCard1}
                   compareCard={compareCards}/> ))}
             </div>
             <p>Plant Info Table</p>
@@ -206,11 +225,8 @@ export default function PlantInfo() {
               {headerGroups.map(headerGroup => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map(column => (
-                    // Add the sorting props to control sorting. For this example
-                    // we can add them into the header props
                     <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                       {column.render('Header')}
-                      {/* Add a sort direction indicator */}
                       <span>
                         {column.isSorted
                           ? column.isSortedDesc
@@ -227,9 +243,9 @@ export default function PlantInfo() {
               {page.map((row, i) => {
                 prepareRow(row)
                 return (
-                  <tr {...row.getRowProps()} onClick={() => showCard1(row.original)}>
+                  <tr {...row.getRowProps()}>
                     {row.cells.map(cell => {
-                      return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                      return <td {...cell.getCellProps()} onClick={() => showCard1(row.original)}>{cell.render('Cell')}</td>
                     })}
                   </tr>
                 )
@@ -282,6 +298,18 @@ export default function PlantInfo() {
             </select>
           </div>
 
+          <ResponsiveContainer width="50%" aspect={3}>
+                <LineChart data={chartData} margin={{ right: 300 }}>
+                    <CartesianGrid />
+                    <XAxis dataKey="date"
+                        interval={'preserveStartEnd'} />
+                    <YAxis></YAxis>
+                    <Legend />
+                    <Tooltip />
+                    <Line dataKey="co2_level"
+                        stroke="black" activeDot={{ r: 8 }} />
+                </LineChart>
+            </ResponsiveContainer>
 
         </div>
     )

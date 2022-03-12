@@ -3,7 +3,14 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import Draggable from 'react-draggable';
 
 export default function CardTable({cardData, hideCard, compareCard}) {
-    console.log(cardData);
+    const colorData = (value) => {
+      if (cardData.comparisonData)
+        if (value < 0)
+          return {color: "red"}
+        else if (value > 0)
+          return {color: "green"}
+      return {color: "initial"}
+    }
     return (
       <Draggable>
         <Container className="content">
@@ -27,7 +34,7 @@ export default function CardTable({cardData, hideCard, compareCard}) {
                         </tr>
                         <tr>
                             <th className="nameCol">CO2_Level</th>
-                            <th className="dataCol">{cardData.co2_level}</th>
+                            <th className="dataCol" style={colorData(cardData.co2_level)}>{cardData.co2_level}</th>
                         </tr>
                     </tbody>
                 </table>
