@@ -198,17 +198,26 @@ export default function PlantInfo() {
 
     const [chartData, setChartData] = useState([]);
     const changeChartData = (add, row) => {
-      console.log("row is + " + row);
-      console.log(row);
-      setChartData(oldArray => [...oldArray, row]);
-      console.log(chartData);
-      /*if (add)
-      {
-        setChartData(chartData.push(row));
-        console.log(chartData);
-      }
-      */
 
+      if (add)
+      {
+        console.log("row is + " + row);
+        console.log(row);
+        setChartData(oldArray => [...oldArray, row]);
+      }
+      else
+      {
+
+      }
+
+    }
+
+    const [pHKey, setPHKey] = useState("pH_level");
+    const changePHKey = () => {
+      if (pHKey == "")
+        setPHKey("pH_level");
+      else
+        setPHKey("");
     }
 
     return (
@@ -298,6 +307,7 @@ export default function PlantInfo() {
             </select>
           </div>
 
+          <Button onClick={changePHKey}>Toggle PH</Button>
           <ResponsiveContainer width="50%" aspect={3}>
                 <LineChart data={chartData} margin={{ right: 300 }}>
                     <CartesianGrid />
@@ -308,8 +318,10 @@ export default function PlantInfo() {
                     <Tooltip />
                     <Line dataKey="co2_level"
                         stroke="black" activeDot={{ r: 8 }} />
+                    <Line dataKey={pHKey}
+                        stroke="red" activeDot={{ r: 8 }} />
                 </LineChart>
-            </ResponsiveContainer>
+          </ResponsiveContainer>
 
         </div>
     )

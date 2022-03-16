@@ -35,16 +35,25 @@ export default function Dash() {
     const [loadingData, setLoadingData] = useState(true);
     const [latestNote, setLatestNote] = useState([]);
     const [latestPlantData, setLatestPlantData] = useState([]);
+    const [latestPicture, setLatestPicture] = useState([]);
     useEffect(() => {
         async function load() {
             var noteData = await getUserNotes();
             var plantData = await getLatestPlantData();
             console.log(noteData);
             console.log(plantData);
+
             setLatestNote(noteData);
             setLatestPlantData(plantData);
+            console.log(plantData.picture.data);
 
-            // you tell it that you had the result
+            var binary = '';
+            var bytes = [].slice.call(new Uint8Array(plantData.picture.data));
+            bytes.forEach((b) => binary += String.fromCharCode(b));
+            var fin = window.btoa(binary);
+
+            console.log(fin);
+            setLatestPicture("data:image/png;base64," + fin);
             setLoadingData(false);
         }
         if (loadingData) { load(); }
@@ -82,7 +91,7 @@ export default function Dash() {
                 </table>
             </Col>
 
-            <Col><img src="https://via.placeholder.com/140x100" alt="Plant Image"></img></Col>
+            <Col><img src={latestPicture} alt="Latest Plant Image"/></Col>
           </Row>
           <Row>
             <Col><Button>Placeholder</Button>Save Note. Delete Note. Undo Changes</Col>
