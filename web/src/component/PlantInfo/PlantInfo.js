@@ -61,10 +61,6 @@ export default function PlantInfo() {
           {
             Header: 'Temperature',
             accessor: 'temperature',
-          },
-          {
-            Header: 'Picture Path',
-            accessor: 'picture_path',
           }
         ],
       }
@@ -75,8 +71,8 @@ export default function PlantInfo() {
     useEffect(() => {
         async function load() {
             var data = await getData();
-            console.log(data.data);
-            setData(data.data);
+            console.log(data);
+            setData(data);
             // you tell it that you had the result
             setLoadingData(false);
         }

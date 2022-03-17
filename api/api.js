@@ -30,6 +30,12 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const convertByteArrayToBase64 = function (byteArray) {
+  var binary = '';
+  var bytes = [].slice.call(new Uint8Array(byteArray));
+  bytes.forEach((b) => binary += String.fromCharCode(b));
+  return "data:image/png;base64," + btoa(binary);
+}
 
 // middleware that checks if JWT token exists and verifies it if it does exist.
 const authMiddleware = function (req, res, next) {
@@ -158,8 +164,9 @@ app.post('/users/logout', (req, res) =>
 
 
 app.post('/plantData/getAll', authMiddleware, async function (req, res) {
-    let plantData = await getAllPlantData();
-    console.log(plantData);
+    let plantData = (await getAllPlantData()).data;
+
+    plantData.forEach((i) => { i.picture = convertByteArrayToBase64(i.picture)});
     return handleResponse(req, res, 200, plantData);
 });
 
@@ -167,11 +174,16 @@ app.post('/plantData/get', authMiddleware, async function (req, res) {
     const plantID = req.body.id;
 
     let plantData = await getPlantData(plantID);
+
+    plantData.picture = convertByteArrayToBase64(plantData.picture);
+
     return handleResponse(req, res, 200, plantData);
 });
 
 app.post('/plantData/getLatest', authMiddleware, async function (req, res) {
     let plantData = await getLatestPlantData();
+
+    plantData.picture = convertByteArrayToBase64(plantData.picture);
     return handleResponse(req, res, 200, plantData);
 });
 

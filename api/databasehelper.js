@@ -19,9 +19,9 @@ async function createUser(username, password)
   await sqlite.open('../database/plantpod.sqlite3');
 
   // SANITIZE DATA
-  let sql = 'INSERT INTO Users VALUES (\'' + username + '\', \'' + password +'\');'
+  let sql = 'INSERT INTO Users (user_name, password) VALUES (?, ?);'
 
-  r = await sqlite.push(sql, []);
+  r = await sqlite.push(sql, [username, password]);
 
   return r;
 }

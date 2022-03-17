@@ -18,7 +18,7 @@ export default function CardTable({cardData, hideCard, compareCard}) {
             <Col><Button primary onClick={() => compareCard(cardData)}>Compare</Button></Col>
           </Row>
           <Row>
-            <Col><img src="https://via.placeholder.com/140x100" alt="Plant Image"></img></Col>
+            <Col><img src={cardData.picture} alt="Plant Image"></img></Col>
           </Row>
           <Row>
             <Col xs={6}>

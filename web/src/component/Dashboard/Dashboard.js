@@ -35,7 +35,6 @@ export default function Dash() {
     const [loadingData, setLoadingData] = useState(true);
     const [latestNote, setLatestNote] = useState([]);
     const [latestPlantData, setLatestPlantData] = useState([]);
-    const [latestPicture, setLatestPicture] = useState([]);
     useEffect(() => {
         async function load() {
             var noteData = await getUserNotes();
@@ -45,15 +44,7 @@ export default function Dash() {
 
             setLatestNote(noteData);
             setLatestPlantData(plantData);
-            console.log(plantData.picture.data);
 
-            var binary = '';
-            var bytes = [].slice.call(new Uint8Array(plantData.picture.data));
-            bytes.forEach((b) => binary += String.fromCharCode(b));
-            var fin = window.btoa(binary);
-
-            console.log(fin);
-            setLatestPicture("data:image/png;base64," + fin);
             setLoadingData(false);
         }
         if (loadingData) { load(); }
@@ -91,7 +82,7 @@ export default function Dash() {
                 </table>
             </Col>
 
-            <Col><img src={latestPicture} alt="Latest Plant Image"/></Col>
+            <Col><img src={latestPlantData.picture} alt="Latest Plant Image"/></Col>
           </Row>
           <Row>
             <Col><Button>Placeholder</Button>Save Note. Delete Note. Undo Changes</Col>
