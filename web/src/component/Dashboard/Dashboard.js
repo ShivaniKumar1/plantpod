@@ -60,35 +60,49 @@ export default function Dash() {
                 <Col md="auto"><Button>Logout</Button></Col>
               </Row>
               <Row>
+                Your Latest Note
                 <textarea value={latestNote.note}></textarea>
               </Row>
             </Col>
             <Col>
+                The Latest Data
                 <table>
                     <tbody>
-                        <tr>
-                            <th className="nameCol">ID</th>
-                            <th className="dataCol">{latestPlantData.id}</th>
-                        </tr>
-                        <tr>
-                            <th className="nameCol">Date</th>
-                            <th className="dataCol">{latestPlantData.date}</th>
-                        </tr>
-                        <tr>
-                            <th className="nameCol">CO2_Level</th>
-                            <th className="dataCol">{latestPlantData.co2_level}</th>
-                        </tr>
+                    <tr>
+                        <th className="nameCol">ID</th>
+                        <th className="dataCol">{latestPlantData.id}</th>
+                    </tr>
+                    <tr>
+                        <th className="nameCol">Date</th>
+                        <th className="dataCol">{latestPlantData.date}</th>
+                    </tr>
+                    <tr>
+                        <th className="nameCol">Dissolved Solids</th>
+                        <th className="dataCol">{latestPlantData.dissolved_solids}</th>
+                    </tr>
+                    <tr>
+                        <th className="nameCol">Light Level</th>
+                        <th className="dataCol">{latestPlantData.light_level}</th>
+                    </tr>
+                    <tr>
+                        <th className="nameCol">Pressure</th>
+                        <th className="dataCol">{latestPlantData.pressure}</th>
+                    </tr>
+                    <tr>
+                        <th className="nameCol">Temperature</th>
+                        <th className="dataCol">{latestPlantData.temperature}</th>
+                    </tr>
+                    <tr>
+                        <th className="nameCol">Humidity</th>
+                        <th className="dataCol">{latestPlantData.humidity}</th>
+                    </tr>
                     </tbody>
                 </table>
             </Col>
 
-            <Col><img src={latestPlantData.picture} alt="Latest Plant Image"/></Col>
+            <Col>The Latest Image<br/><img src={latestPlantData.picture} alt="Latest Plant Image"/></Col>
           </Row>
-          <Row>
-            <Col><Button>Placeholder</Button>Save Note. Delete Note. Undo Changes</Col>
-            <Col></Col>
-          </Row>
-        </Container>
+          </Container>
     </div>
   );
 }

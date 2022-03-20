@@ -91,9 +91,24 @@ async function getNote(id)
   await sqlite.open('../database/plantpod.sqlite3');
 
   // SANITIZE DATA
-  let sql = 'SELECT * FROM Note WHERE id = ?'
+  let sql = 'SELECT * FROM Notes WHERE id = ?'
 
   r = await sqlite.get(sql, [id]);
+
+  if (r == undefined)
+    r = {}
+
+  return r;
+}
+
+async function getUsersPlantNote(userID, plantID)
+{
+  await sqlite.open('../database/plantpod.sqlite3');
+
+  // SANITIZE DATA
+  let sql = 'SELECT * FROM Notes WHERE user_id = ? AND sensor_data_id = ?'
+
+  r = await sqlite.get(sql, [userID, plantID]);
 
   if (r == undefined)
     r = {}
@@ -167,6 +182,7 @@ module.exports =
 
   getAllNotesFromUser,
   getNote,
+  getUsersPlantNote,
   getLatestNoteFromUser,
   createNote,
   editNote,

@@ -24,10 +24,12 @@
     position: absolute;
     display: flex;
     flex-direction: column;
+    flex-wrap: nowrap;
     align-items: center;
     background-color: #acbcb2;
     box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     margin: 50px;
+    margin-left: 30%;
     padding: 20px;
     border-radius: 20px;
 
@@ -104,13 +106,13 @@ td {
     border-right: 1px solid black;
 }
 
-#hiddenCard1 {
+#hiddenCard {
     position: fixed;
     visibility: hidden;
     background: white;
 }
 
-#revealedCard1 {
+#revealedCard {
     visibility: visible;
     position: fixed;
     margin: 50px 50px;
@@ -146,13 +148,13 @@ td {
       border-right: 1px solid black;
   }
 
-  #hiddenCard1 {
+  #hiddenCard {
       position: fixed;
       visibility: hidden;
       background-color: transparent;
   }
 
-  #revealedCard1 {
+  #revealedCard {
       visibility: visible;
       position: fixed;
       margin: 50px 50px;

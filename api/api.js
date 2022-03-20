@@ -15,7 +15,7 @@ const
 {
     getUser, createUser,
     getPlantData, getLatestPlantData, getAllPlantData,
-    getAllNotesFromUser, getNote, getLatestNoteFromUser, createNote, editNote, deleteNote
+    getAllNotesFromUser, getNote, getUsersPlantNote, getLatestNoteFromUser, createNote, editNote, deleteNote
 } = require('./databasehelper.js');
 
 const app = express();
@@ -203,6 +203,15 @@ app.post('/notes/get', authMiddleware, async function (req, res) {
     const noteID = req.body.noteID;
 
     let note = await getNote(noteID);
+    return handleResponse(req, res, 200, note);
+});
+
+app.post('/notes/getUsersPlantNote', authMiddleware, async function (req, res) {
+    const userID = req.body.user_id;
+    const plantID = req.body.plant_id;
+
+    let note = await getUsersPlantNote(userID, plantID);
+    console.log(note);
     return handleResponse(req, res, 200, note);
 });
 

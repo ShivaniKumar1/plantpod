@@ -66,7 +66,6 @@ export default function Usernotes() {
       setEditingNoteText(note.note);
     }
     const changeCurrentNoteText = (event) => {
-
       let newNote = currentNote;
       newNote.note = event.target.value;
       setCurrentNote(newNote);
@@ -74,24 +73,24 @@ export default function Usernotes() {
     }
 
     const [sendCardData, setSendCardData] = useState([]);
-    const [card1style, setCard1Style] = useState("hiddenCard1");
-    const showCard1 = async (note) => {
+    const [cardStyle, setCardStyle] = useState("hiddenCard");
+    const showCard = async (note) => {
       async function load() {
           var data = await getPlantData(note.sensor_data_id);
-          console.log("trying to load plant data: " + data);
-          setSendCardData(data);
-          console.log("clicked");
-          setCard1Style("revealedCard1");
+          setCardStyle("revealedCard");
+          setSendCardData([...sendCardData, data]);
+          addCard();
       }
       await load();
     }
-    const hideCard1 = () => {
-        setCard1Style("hiddenCard1");
+
+    const [cards, setCards] = useState([]);
+    function addCard() {
+      setCards([...cards, "Sample Component"]);
     }
 
-
     const contents = notes.map(note => {
-          return <tr onClick={() => changeCurrentNote(note)} onDoubleClick={() => showCard1(note)} key={note.id}>
+          return <tr onClick={() => changeCurrentNote(note)} onDoubleClick={() => showCard(note)} key={note.id}>
             <td>{note.date}</td>
             <td>{note.sensor_data_id}</td>
             <td>{note.note.substr(0, 30) + "..."}</td>
@@ -101,8 +100,8 @@ export default function Usernotes() {
      //note, change this table to a react-table table (need paging and sorting)
   return (
     <div className="content">
-        <div id={card1style}>
-            <CardTable cardData={sendCardData} hideCard={hideCard1}></CardTable>
+        <div id={cardStyle}>
+            {cards.map((item, i) => ( <CardTable cardData={sendCardData[i]}/> ))}
         </div>
         <div>
             <Container>

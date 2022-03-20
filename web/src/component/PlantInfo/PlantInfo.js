@@ -5,6 +5,7 @@ import { useTable, useSortBy, usePagination, useRowSelect } from 'react-table'
 import { getToken } from './../util/JWTHelper';
 import { Button } from 'react-bootstrap';
 import CardTable from './CardTable.js';
+import DataChart from './DataChart.js';
 
 const env = require('./../../env/env.json');
 
@@ -18,8 +19,6 @@ async function getData() {
     })
     .then(res => res.json())
     .then(json => { return json;})
-
-
 }
 
 
@@ -43,24 +42,24 @@ export default function PlantInfo() {
             accessor: 'date',
           },
           {
-            Header: 'CO2',
-            accessor: 'co2_level',
+            Header: 'Dissolved Solids',
+            accessor: 'dissolved_solids',
           },
           {
-            Header: 'PH',
-            accessor: 'pH_level',
+            Header: 'Light Level',
+            accessor: 'light_level',
           },
           {
             Header: 'Pressure',
             accessor: 'pressure',
           },
           {
-            Header: 'Soil Moisture',
-            accessor: 'soil_moisture',
-          },
-          {
             Header: 'Temperature',
             accessor: 'temperature',
+          },
+          {
+            Header: 'Humidity',
+            accessor: 'humidity',
           }
         ],
       }
@@ -71,15 +70,11 @@ export default function PlantInfo() {
     useEffect(() => {
         async function load() {
             var data = await getData();
-            console.log(data);
             setData(data);
-            // you tell it that you had the result
             setLoadingData(false);
         }
         if (loadingData) { load(); }
     }, []);
-
-
 
     const IndeterminateCheckbox = React.forwardRef(
       ({ indeterminate, ...rest }, ref) => {
@@ -90,11 +85,7 @@ export default function PlantInfo() {
           resolvedRef.current.indeterminate = indeterminate
         }, [resolvedRef, indeterminate])
 
-        return (
-          <>
-            <input type="checkbox" ref={resolvedRef} {...rest} />
-          </>
-        )
+        return (<input type="checkbox" ref={resolvedRef} {...rest} />)
       }
     )
 
@@ -127,15 +118,11 @@ export default function PlantInfo() {
               hooks.visibleColumns.push(columns => [
                 {
                   id: 'selection',
-                  // The header can use the table's getToggleAllRowsSelectedProps method
-                  // to render a checkbox
                   Header: ({ getToggleAllPageRowsSelectedProps }) => (
                     <div>
                       <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
                     </div>
                   ),
-                  // The cell can use the individual row's getToggleRowSelectedProps method
-                  // to the render a checkbox
                   Cell: ({ row }) => (
                     <div>
                       <IndeterminateCheckbox onClick={(e) => {changeChartData(e.target.checked, row.original)}}{...row.getToggleRowSelectedProps()} />
@@ -150,15 +137,21 @@ export default function PlantInfo() {
 
 
     const [sendCardData, setSendCardData] = useState([]);
-    const [card1style, setCard1Style] = useState("hiddenCard1");
-    const showCard1 = (cd) => {
-      setCard1Style("revealedCard1");
-      setSendCardData([...sendCardData, cd]);
-      addCard();
+    const [cardStyle, setCardStyle] = useState("hiddenCard");
+    const showCard = (cd, isCheckBox) => {
+      if (isCheckBox == undefined)
+      {
+        setCardStyle("revealedCard");
+        setSendCardData([...sendCardData, cd]);
+        addCard();
+      }
     }
-    const hideCard1 = () => {
-       setCard1Style("hiddenCard1");
+
+    const [cards, setCards] = useState([]);
+    function addCard() {
+      setCards([...cards, "Sample Component"]);
     }
+
     let compareCard1 = undefined;
     let compareCard2 = undefined;
     const compareCards = (cd) => {
@@ -166,61 +159,41 @@ export default function PlantInfo() {
         compareCard1 = cd;
       else if (compareCard2 === undefined) {
         compareCard2 = cd;
-        showCard1(cardDiff());
+        showCard(cardDiff());
         compareCard1 = undefined;
         compareCard2 = undefined;
       }
       else
         console.log("You've done something wrong :( ");
     }
+
     const cardDiff = () => {
       let cdDiff = {
         id: "~",
         date: "~",
-        co2_level: compareCard1.co2_level - compareCard2.co2_level,
-        pH_level: compareCard1.pH_level - compareCard2.pH_level,
+        dissolved_solids: compareCard1.dissolved_solids - compareCard2.dissolved_solids,
+        pH_level: compareCard1.light_level - compareCard2.light_level,
         pressure: compareCard1.pressure - compareCard2.pressure,
-        soil_moisture: compareCard1.soil_moisture - compareCard2.soil_moisture,
-        temperature: compareCard1.temperature - compareCard2.temperature,
+        soil_moisture: compareCard1.temperature - compareCard2.temperature,
+        temperature: compareCard1.humidity - compareCard2.humidity,
         comparisonData: true
       }
       return cdDiff;
     }
-    const [cards, setCards] = useState([]);
-    function addCard() {
-      setCards([...cards, "Sample Component"]);
-
-    }
 
     const [chartData, setChartData] = useState([]);
     const changeChartData = (add, row) => {
-
       if (add)
-      {
-        console.log("row is + " + row);
-        console.log(row);
         setChartData(oldArray => [...oldArray, row]);
-      }
       else
-      {
-
-      }
-
-    }
-
-    const [pHKey, setPHKey] = useState("pH_level");
-    const changePHKey = () => {
-      if (pHKey == "")
-        setPHKey("pH_level");
-      else
-        setPHKey("");
+        setChartData(oldArray => oldArray.filter(function(i) { return i.id != row.id; }));
     }
 
     return (
 
         <div className="plantInfo">
-            <div id={card1style}>
-                {cards.map((item, i) => ( <CardTable cardData={sendCardData[i]} hideCard={hideCard1}
+            <div id={cardStyle}>
+                {cards.map((item, i) => ( <CardTable cardData={sendCardData[i]}
                   compareCard={compareCards}/> ))}
             </div>
             <p>Plant Info Table</p>
@@ -250,7 +223,7 @@ export default function PlantInfo() {
                 return (
                   <tr {...row.getRowProps()}>
                     {row.cells.map(cell => {
-                      return <td {...cell.getCellProps()} onClick={() => showCard1(row.original)}>{cell.render('Cell')}</td>
+                      return <td {...cell.getCellProps()} onClick={(e) => showCard(row.original, e.target.checked)}>{cell.render('Cell')}</td>
                     })}
                   </tr>
                 )
@@ -303,21 +276,7 @@ export default function PlantInfo() {
             </select>
           </div>
 
-          <Button onClick={changePHKey}>Toggle PH</Button>
-          <ResponsiveContainer width="50%" aspect={3}>
-                <LineChart data={chartData} margin={{ right: 300 }}>
-                    <CartesianGrid />
-                    <XAxis dataKey="date"
-                        interval={'preserveStartEnd'} />
-                    <YAxis></YAxis>
-                    <Legend />
-                    <Tooltip />
-                    <Line dataKey="co2_level"
-                        stroke="black" activeDot={{ r: 8 }} />
-                    <Line dataKey={pHKey}
-                        stroke="red" activeDot={{ r: 8 }} />
-                </LineChart>
-          </ResponsiveContainer>
+          <DataChart chartData={chartData}/>
 
         </div>
     )
