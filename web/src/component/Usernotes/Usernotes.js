@@ -2,6 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { getToken, getUserInfo } from './../util/JWTHelper';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import CardTable from './../PlantInfo/CardTable.js';
+import history from './../history/history';
 
 const env = require('./../../env/env.json');
 
@@ -15,7 +16,7 @@ async function getUserNotes() {
         },
         body: JSON.stringify(getUserInfo())
     })
-    .then(res => res.json())
+    .then(res => { if (res.status == 401) history.push('/Login'); return res.json() })
     .then(json => { return json;})
 }
 
@@ -28,7 +29,7 @@ async function updateNote(note) {
         },
         body: JSON.stringify(note)
     })
-    .then(res => res.json())
+    .then(res => { if (res.status == 401) history.push('/Login'); return res.json() })
     .then(json => { console.log(json);})
 }
 
@@ -41,7 +42,7 @@ async function getPlantData(id) {
         },
         body: JSON.stringify({ id: id })
     })
-    .then(res => res.json())
+    .then(res => { if (res.status == 401) history.push('/Login'); return res.json() })
     .then(json => { return json;})
 }
 

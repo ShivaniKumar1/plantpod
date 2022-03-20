@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import Draggable from 'react-draggable';
 import { getToken, getUserInfo } from './../util/JWTHelper';
+import history from './../history/history';
 
 const env = require('./../../env/env.json');
 
@@ -15,7 +16,7 @@ async function getNote(plantID) {
         },
         body: JSON.stringify(body)
     })
-    .then(res => res.json())
+    .then(res => { if (res.status == 401) history.push('/Login'); return res.json() })
     .then(json => { return json;})
 }
 
@@ -28,7 +29,7 @@ async function updateNote(note) {
         },
         body: JSON.stringify(note)
     })
-    .then(res => res.json())
+    .then(res => { if (res.status == 401) history.push('/Login'); return res.json() })
     .then(json => { console.log(json);})
 }
 

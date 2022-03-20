@@ -1,11 +1,12 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { getToken, getUserInfo } from './../util/JWTHelper';
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import history from './../history/history';
 
 const env = require('./../../env/env.json');
 
 
-async function getUserNotes() {
+async function getLatestUserNote () {
     return await fetch(env.APIURL + '/notes/getLatest', {
         method: 'POST',
         headers: {
@@ -14,7 +15,7 @@ async function getUserNotes() {
         },
         body: JSON.stringify(getUserInfo())
     })
-    .then(res => res.json())
+    .then(res => { if (res.status == 401) history.push('/Login'); return res.json() })
     .then(json => { console.log(json); return json;})
 }
 
@@ -26,7 +27,7 @@ async function getLatestPlantData() {
             'Authorization': 'Bearer ' + getToken()
         }
     })
-    .then(res => res.json())
+    .then(res => { if (res.status == 401) history.push('/Login'); return res.json() })
     .then(json => { console.log(json); return json;})
 }
 
@@ -37,7 +38,7 @@ export default function Dash() {
     const [latestPlantData, setLatestPlantData] = useState([]);
     useEffect(() => {
         async function load() {
-            var noteData = await getUserNotes();
+            var noteData = await getLatestUserNote();
             var plantData = await getLatestPlantData();
             console.log(noteData);
             console.log(plantData);
@@ -102,7 +103,7 @@ export default function Dash() {
 
             <Col>The Latest Image<br/><img src={latestPlantData.picture} alt="Latest Plant Image"/></Col>
           </Row>
-          </Container>
+        </Container>
     </div>
   );
 }

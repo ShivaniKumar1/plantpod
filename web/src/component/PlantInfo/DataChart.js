@@ -5,6 +5,7 @@ import { useTable, useSortBy, usePagination, useRowSelect } from 'react-table'
 import { getToken } from './../util/JWTHelper';
 import { Button } from 'react-bootstrap';
 import CardTable from './CardTable.js';
+import history from './../history/history';
 
 const env = require('./../../env/env.json');
 

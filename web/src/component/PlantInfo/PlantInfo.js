@@ -6,6 +6,7 @@ import { getToken } from './../util/JWTHelper';
 import { Button } from 'react-bootstrap';
 import CardTable from './CardTable.js';
 import DataChart from './DataChart.js';
+import history from './../history/history';
 
 const env = require('./../../env/env.json');
 
@@ -17,7 +18,7 @@ async function getData() {
             'Authorization': 'Bearer ' + getToken()
         }
     })
-    .then(res => res.json())
+    .then(res => { if (res.status == 401) history.push('/Login'); return res.json() })
     .then(json => { return json;})
 }
 
