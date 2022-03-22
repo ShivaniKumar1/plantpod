@@ -1,4 +1,8 @@
-from mrcnn import model, visualize, config
+import mrcnn
+import mrcnn.config as config
+import mrcnn.model as model
+import mrcnn.visualize as visualize
+import os
 from skimage import io
 import sys
 import matplotlib
@@ -66,10 +70,9 @@ def arguments():
     CMD args
     """
     parser = argparse.ArgumentParser(description='Performs inference using a Mask RCNN Model')
-    parser.add_argument('--dataPattern', type=str, required=True,
-                        help="A glob file path pattern in quotations. e.g. '/data/plants/plant????_*_image.png'")
-    parser.add_argument('--outputDir', type=str, required=True,
-                        help='Directory to save all outputs to')
+    parser.add_argument('--inputImage', type=str, required=True,
+                        help="Filepath to where the input image is.'")
+    
     parser.add_argument('--weightsPath', type=str, required=True,
                         help='Path to model weights to use (h5 file)')
     parser.add_argument('--verboseDetection', dest='verbose', action='store_true')
@@ -113,8 +116,8 @@ def inference():
     args = arguments()
 
     # Create output dir
-    assert not os.path.isdir(args.outputDir), "output dir already exists"
-    os.mkdir(args.outputDir)
+    # assert not os.path.isdir(args.outputDir), "output dir already exists"
+    # os.mkdir(args.outputDir)
 
     # Init config
     configuration = InferenceConfig()
@@ -125,26 +128,23 @@ def inference():
     # Init model
     inference_model = model.MaskRCNN(mode="inference",
                           config=configuration,
-                          model_dir=args.outputDir)
+                          model_dir=os.getcwd())
 
     assert os.path.exists(args.weightsPath), "Weights file does not exist at " + args.weightsPath
     inference_model.load_weights(args.weightsPath, by_name=True)
 
     # Predict Images
-    with open(os.path.join(args.outputDir, 'leafCounts.csv'), 'a') as count_file:
-        count_file.write("Image, Count\n")
-        for im_path in glob(args.dataPattern):
-            out_path = os.path.join(args.outputDir, os.path.basename(im_path))
+    # with open(os.path.join(args.outputDir, 'leafCounts.csv'), 'a') as count_file:
+    im_path = args.inputImage
+    
+    # out_path = os.path.join(args.outputDir, os.path.basename(im_path))
 
-            print("Saving prediction for", im_path, "at", out_path)
+    image = load_image(im_path)
 
-            image = load_image(im_path)
-
-            results = inference_model.detect([image], verbose=args.verbose)
-            rgb_mask = mask_to_rgb(results[0]['masks'])
-            io.imsave(out_path, rgb_mask)
-
-            count_file.write(os.path.basename(im_path) + ", " + str(results[0]['masks'].shape[2]) + "\n")
+    results = inference_model.detect([image], verbose=args.verbose)
+    # rgb_mask = mask_to_rgb(results[0]['masks'])
+    # io.imsave(out_path, rgb_mask)
+    print("RESULTS!!!!!!!!!!!!! >>>" + str(results[0]['masks'].shape[2]));
 
 if __name__ == '__main__':
     inference()
