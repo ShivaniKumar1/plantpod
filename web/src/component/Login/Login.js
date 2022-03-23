@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { setToken, setUserInfo } from './../util/JWTHelper';
 import history from './../history/history'
@@ -35,20 +36,20 @@ export default function Login() {
     }
 
     return (
-        <div className="loginform">
+        <div className="loginForm">
             <h1>Login</h1>
+            <br></br>
             <form onSubmit={handleSubmit}>
-                <label>
-                    <p>Username</p>
+                <label>Username:
                     <input type="text" onChange={e => setUserName(e.target.value)}/>
                 </label>
-                <label>
-                    <p>Password</p>
+                <label>Password:
                     <input type="password" onChange={e => setPassword(e.target.value)}/>
                 </label>
                 <div className="button">
                     <button type="submit">Submit</button>
                 </div>
+                <Button className="signupbutton" onClick={() => history.push('/Signup')}>Go to Signup →</Button>
             </form>
         </div>
     )

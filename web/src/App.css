@@ -36,7 +36,6 @@
     pointer-events: auto;
 }
 
-
 /* Landing Page */
 
 .App {
@@ -122,8 +121,31 @@ td {
 
 .Signup {
     text-align: center;
+    flex-direction: column;
+    background-color: #acbcb2;
+    box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    margin: 130px;
+    margin-left: 35%;
+    padding: 30px;
+    border-radius: 20px;
+    width: 440px;
+    pointer-events: auto;
   }
-
+  
+label {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    text-align: right;
+    line-height: 26px;
+    margin-bottom: 20px;
+}
+    
+input {
+    height: 25px;
+    flex: 0 0 250px;
+    margin-left: 20px;
+}
 
 /* PlantInfo Page */
 
@@ -170,17 +192,38 @@ td {
     visibility: visible;
 }
 
-#bootstrap-overrides .button {
+#bootstrap-overrides .navbutton {
     color: black;
     margin: 20px;
     background-color: transparent;
+    border: 2px solid #1d2228;
 }
 
+#bootstrap-overrides .navbutton:active {
+    color: white;
+    margin: 20px;
+    background-color: transparent;
+    border: 2px solid #1d2228;
+}
 
 /* Login Page */
 
 .loginForm {
-    display: flex;
+    text-align: center;
     flex-direction: column;
-    align-items: center;
+    background-color: #acbcb2;
+    box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    margin: 200px;
+    margin-left: 37%;
+    border-radius: 20px;
+    pointer-events: auto;
+    padding: 30px;
+    width: 400px;
  }
+
+ #bootstrap-overrides .signupbutton {
+    color: black;
+    margin: 20px;
+    background-color: transparent;
+    border: 2px solid #1d2228;
+}

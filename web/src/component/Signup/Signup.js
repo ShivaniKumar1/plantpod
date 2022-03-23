@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { setToken, setUserInfo } from './../util/JWTHelper';
 import history from './../history/history'
@@ -37,32 +38,29 @@ export default function Signup() {
 
     }
       return (
-          <div className="signup">
-              <h2>Create an account below.</h2>
+          <div className="Signup">
+              <h2>Create an account below</h2>
+              <br></br>
               <form className="form-wrapper" onSubmit={handleSubmit}>
-                  <label className="label">
-                      <p>First name</p>
+                  <label className="label">First Name:
                       <input type="fname" onChange={e => setFirstName(e.target.value)}/>
                   </label>
-                  <label className="label">
-                      <p>Last name</p>
+                  <label className="label">Last Name:
                       <input type="lname" onChange={e => setLastName(e.target.value)}/>
                   </label>
-                  <label className="label">
-                      <p>Username</p>
+                  <label className="label">Username:
                       <input type="username" onChange={e => setUsername(e.target.value)} />
                   </label>
-                  <label className="label">
-                      <p>Email</p>
+                  <label className="label">Email:
                       <input type="email" onChange={e => setEmail(e.target.value)}/>
                   </label>
-                  <label className="label">
-                      <p>Password</p>
+                  <label className="label">Password:
                       <input type="password" onChange={e => setPassword(e.target.value)}/>
                   </label>
                   <div className="submit">
                       <button className="submit">Submit</button>
                   </div>
+                  <Button className="signupbutton" onClick={() => history.push('/Login')}>Go to Login →</Button>
               </form>
           </div>
       )
