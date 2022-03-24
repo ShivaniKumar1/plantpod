@@ -54,6 +54,14 @@ export default function PlantInfo({chartData}) {
         setHumidityKey("");
     }
 
+    const [leavesKey, setLeavesKey] = useState("number_of_leaves");
+    const changeLeavesKey = () => {
+      if (leavesKey == "")
+        setLeavesKey("number_of_leaves");
+      else
+        setLeavesKey("");
+    }
+
     return (
         <div>
           <Button onClick={changeDissolvedSolidsKey}>Toggle Dissolved Solids</Button>
@@ -61,6 +69,7 @@ export default function PlantInfo({chartData}) {
           <Button onClick={changePressureKey}>Toggle Pressure</Button>
           <Button onClick={changeTemperatureKey}>Toggle Temperature</Button>
           <Button onClick={changeHumidityKey}>Toggle Humidity</Button>
+          <Button onClick={changeLeavesKey}>Toggle Leaves</Button>
           <ResponsiveContainer aspect={3}>
                 <LineChart data={chartData} margin={{ right: 300 }}>
                     <CartesianGrid />
@@ -79,6 +88,8 @@ export default function PlantInfo({chartData}) {
                         stroke="blue" activeDot={{ r: 8 }} />
                     <Line dataKey={humidityKey}
                         stroke="green" activeDot={{ r: 8 }} />
+                    <Line dataKey={leavesKey}
+                        stroke="orange" activeDot={{ r: 8 }} />
 
                 </LineChart>
           </ResponsiveContainer>

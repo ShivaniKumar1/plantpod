@@ -61,6 +61,10 @@ export default function PlantInfo() {
           {
             Header: 'Humidity',
             accessor: 'humidity',
+          },
+          {
+            Header: 'Leaves',
+            accessor: 'number_of_leaves',
           }
         ],
       }
@@ -173,10 +177,11 @@ export default function PlantInfo() {
         id: "~",
         date: "~",
         dissolved_solids: compareCard1.dissolved_solids - compareCard2.dissolved_solids,
-        pH_level: compareCard1.light_level - compareCard2.light_level,
+        light_level: compareCard1.light_level - compareCard2.light_level,
         pressure: compareCard1.pressure - compareCard2.pressure,
-        soil_moisture: compareCard1.temperature - compareCard2.temperature,
-        temperature: compareCard1.humidity - compareCard2.humidity,
+        temperature: compareCard1.temperature - compareCard2.temperature,
+        humidity: compareCard1.humidity - compareCard2.humidity,
+        number_of_leaves: compareCard1.number_of_leaves - compareCard2.number_of_leaves,
         comparisonData: true
       }
       return cdDiff;
