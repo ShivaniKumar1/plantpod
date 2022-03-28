@@ -114,7 +114,7 @@ export default function CardTable({cardData, compareCard}) {
                         </tr>
                         <tr>
                             <th className="nameCol">Leaves</th>
-                            <th className="dataCol" style={colorData(cardData.number_of_leaves)}>{cardData.humidity}</th>
+                            <th className="dataCol" style={colorData(cardData.number_of_leaves)}>{cardData.number_of_leaves}</th>
                         </tr>
                     </tbody>
                 </table>

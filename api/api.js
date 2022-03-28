@@ -14,7 +14,7 @@ const
 const
 {
     getUser, createUser,
-    getPlantData, getLatestPlantData, getAllPlantData,
+    getPlantData, getLatestPlantData, getAllPlantData, uploadPlantData,
     getAllNotesFromUser, getNote, getUsersPlantNote, getLatestNoteFromUser, createNote, editNote, deleteNote
 } = require('./databasehelper.js');
 
@@ -185,6 +185,20 @@ app.post('/plantData/getLatest', authMiddleware, async function (req, res) {
 
     plantData.picture = convertByteArrayToBase64(plantData.picture);
     return handleResponse(req, res, 200, plantData);
+});
+
+app.post('/plantData/upload', authMiddleware, async function (req, res) {
+    const dissolved_solids = req.body.dissolved_solids;
+    const light_level = req.body.light_level;
+    const pressure = req.body.pressure;
+    const temperature = req.body.temperature;
+    const humidity = req.body.humidity;
+    const picture = req.body.picture;
+    const number_of_leaves = -1;
+
+    let plantData = await uploadPlantData(dissolved_solids, light_level, pressure, temperature, humidity, picture, number_of_leaves);
+
+    return handleResponse(req, res, 201, plantData);
 });
 
 

@@ -40,8 +40,6 @@ export default function Dash() {
         async function load() {
             var noteData = await getLatestUserNote();
             var plantData = await getLatestPlantData();
-            console.log(noteData);
-            console.log(plantData);
 
             setLatestNote(noteData);
             setLatestPlantData(plantData);

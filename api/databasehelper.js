@@ -70,6 +70,18 @@ async function getLatestPlantData()
   return r;
 }
 
+async function uploadPlantData(dissolved_solids, light_level, pressure, temperature, humidity, picture, number_of_leaves)
+{
+  await sqlite.open('../database/plantpod.sqlite3');
+
+  // SANITIZE DATA
+  let sql = 'INSERT INTO SensorData (dissolved_solids, light_level, pressure, temperature, humidity, picture, number_of_leaves) VALUES (?, ?, ?, ?, ?, ?, ?);'
+
+  r = await sqlite.push(sql, [dissolved_solids, light_level, pressure, temperature, humidity, picture, number_of_leaves]);
+
+  return r;
+}
+
 
 async function getAllNotesFromUser(userID)
 {
@@ -179,6 +191,7 @@ module.exports =
   getPlantData,
   getAllPlantData,
   getLatestPlantData,
+  uploadPlantData,
 
   getAllNotesFromUser,
   getNote,
