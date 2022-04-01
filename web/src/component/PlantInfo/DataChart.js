@@ -22,14 +22,6 @@ export default function PlantInfo({chartData}) {
         setDissolvedSolidsKey("");
     }
 
-    const [lightLevelKey, setLightLevelKey] = useState("light_level");
-    const changeLightLevelKey = () => {
-      if (lightLevelKey == "")
-        setLightLevelKey("light_level");
-      else
-        setLightLevelKey("");
-    }
-
     const [pressureKey, setPressureKey] = useState("pressure");
     const changePressureKey = () => {
       if (pressureKey == "")
@@ -62,14 +54,77 @@ export default function PlantInfo({chartData}) {
         setLeavesKey("");
     }
 
+    const [redLightKey, setRedLightKey] = useState("red_light");
+    const changeRedLightKey = () => {
+      if (redLightKey == "")
+        setRedLightKey("red_light");
+      else
+        setRedLightKey("");
+    }
+
+    const [orangeLightKey, setOrangeLightKey] = useState("light_level");
+    const changeOrangeLightKey = () => {
+      if (orangeLightKey == "")
+        setOrangeLightKey("orange_light");
+      else
+        setOrangeLightKey("");
+    }
+
+    const [yellowLightKey, setYellowLightKey] = useState("yellow_light");
+    const changeYellowLightKey = () => {
+      if (yellowLightKey == "")
+        setYellowLightKey("yellow_light");
+      else
+        setYellowLightKey("");
+    }
+
+    const [greenLightKey, setGreenLightKey] = useState("green_light");
+    const changeGreenLightKey = () => {
+      if (greenLightKey == "")
+        setGreenLightKey("green_light");
+      else
+        setGreenLightKey("");
+    }
+
+    const [lightBlueLightKey, setLightBlueLightKey] = useState("light_blue_light");
+    const changeLightBlueLightKey = () => {
+      if (lightBlueLightKey == "")
+        setLightBlueLightKey("light_blue_light");
+      else
+        setLightBlueLightKey("");
+    }
+
+    const [blueLightKey, setBlueLightKey] = useState("blue_light");
+    const changeBlueLightKey = () => {
+      if (blueLightKey == "")
+        setBlueLightKey("blue_light");
+      else
+        setBlueLightKey("");
+    }
+
+    const [purpleLightKey, setPurpleLightKey] = useState("purple_light");
+    const changePurpleLightKey = () => {
+      if (purpleLightKey == "")
+        setPurpleLightKey("purple_light");
+      else
+        setPurpleLightKey("");
+    }
+
     return (
         <div>
           <Button onClick={changeDissolvedSolidsKey}>Toggle Dissolved Solids</Button>
-          <Button onClick={changeLightLevelKey}>Toggle Light Level</Button>
           <Button onClick={changePressureKey}>Toggle Pressure</Button>
           <Button onClick={changeTemperatureKey}>Toggle Temperature</Button>
           <Button onClick={changeHumidityKey}>Toggle Humidity</Button>
           <Button onClick={changeLeavesKey}>Toggle Leaves</Button>
+          <Button onClick={changeRedLightKey}>Toggle Red Light</Button>
+          <br/>
+          <Button onClick={changeOrangeLightKey}>Toggle Orange Light</Button>
+          <Button onClick={changeYellowLightKey}>Toggle Yellow Light</Button>
+          <Button onClick={changeGreenLightKey}>Toggle Green Light</Button>
+          <Button onClick={changeLightBlueLightKey}>Toggle Light Blue Light</Button>
+          <Button onClick={changeBlueLightKey}>Toggle Blue Light</Button>
+          <Button onClick={changePurpleLightKey}>Toggle Purple Light</Button>
           <ResponsiveContainer aspect={3}>
                 <LineChart data={chartData} margin={{ right: 300 }}>
                     <CartesianGrid />
@@ -80,8 +135,6 @@ export default function PlantInfo({chartData}) {
                     <Tooltip />
                     <Line dataKey={dissolvedSolidsKey}
                         stroke="black" activeDot={{ r: 8 }} />
-                    <Line dataKey={lightLevelKey}
-                        stroke="red" activeDot={{ r: 8 }} />
                     <Line dataKey={pressureKey}
                         stroke="yellow" activeDot={{ r: 8 }} />
                     <Line dataKey={temperatureKey}
@@ -90,6 +143,21 @@ export default function PlantInfo({chartData}) {
                         stroke="green" activeDot={{ r: 8 }} />
                     <Line dataKey={leavesKey}
                         stroke="orange" activeDot={{ r: 8 }} />
+
+                    <Line dataKey={redLightKey}
+                        stroke="red" activeDot={{ r: 8 }} />
+                    <Line dataKey={orangeLightKey}
+                        stroke="orange" activeDot={{ r: 8 }} />
+                    <Line dataKey={yellowLightKey}
+                        stroke="yellow" activeDot={{ r: 8 }} />
+                    <Line dataKey={greenLightKey}
+                        stroke="green" activeDot={{ r: 8 }} />
+                    <Line dataKey={lightBlueLightKey}
+                        stroke="#70A3CC" activeDot={{ r: 8 }} />
+                    <Line dataKey={blueLightKey}
+                        stroke="blue" activeDot={{ r: 8 }} />
+                    <Line dataKey={purpleLightKey}
+                        stroke="purple" activeDot={{ r: 8 }} />
 
                 </LineChart>
           </ResponsiveContainer>

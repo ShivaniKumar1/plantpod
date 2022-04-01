@@ -1,11 +1,13 @@
 /* General CSS */
+/* https://coolors.co/d8f3dc-b7e4c7-95d5b2-74c69d-52b788-40916c-2d6a4f-1b4332-081c15 color pallet */
 
 .background {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #839c8e;
-
+    /* background: #839c8e; */
+    /* background-image: linear-gradient(to right, rgb(182, 244, 146), rgb(51, 139, 147)); */
+    background-image: radial-gradient( circle farthest-corner at 10% 20%, rgba(149,213,178,1) 0%, rgba(116,198,157,1) 90% );
 
     display: table;
     position: absolute;
@@ -21,19 +23,34 @@
 }
 
 .content {
-    position: absolute;
+
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: center;
-    background-color: #acbcb2;
+    background-color: #b7e4c7;
     box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     margin: 50px;
-    margin-left: 30%;
+    margin-left: 14%;
     padding: 20px;
     border-radius: 20px;
     width: auto;
     pointer-events: auto;
+}
+
+.lineBreak
+{
+  flex-grow: 1;
+  height: 2px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  min-width: 20px;
+  margin: 10px;
+}
+
+.header
+{
+  font-family: "Computer Modern";
+  text-align: center;
 }
 
 /* Landing Page */
@@ -87,7 +104,7 @@ button:active {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #acbcb2;
+    background-color: #b7e4c7;
  }
 
 table {
@@ -122,7 +139,7 @@ td {
 .Signup {
     text-align: center;
     flex-direction: column;
-    background-color: #acbcb2;
+    background-color: #b7e4c7;
     box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     margin: 130px;
     margin-left: 35%;
@@ -131,7 +148,7 @@ td {
     width: 440px;
     pointer-events: auto;
   }
-  
+
 label {
     display: flex;
     flex-direction: row;
@@ -140,7 +157,7 @@ label {
     line-height: 26px;
     margin-bottom: 20px;
 }
-    
+
 input {
     height: 25px;
     flex: 0 0 250px;
@@ -187,6 +204,7 @@ input {
 
 #bootstrap-overrides .Navbar {
     box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    background-color: #74c69d;
     margin: 0px;
     position: fixed;
     visibility: visible;
@@ -195,7 +213,7 @@ input {
 #bootstrap-overrides .navbutton {
     color: black;
     margin: 20px;
-    background-color: transparent;
+    background-color: #95d5b2;
     border: 2px solid #1d2228;
 }
 
@@ -211,7 +229,7 @@ input {
 .loginForm {
     text-align: center;
     flex-direction: column;
-    background-color: #acbcb2;
+    background-color: #b7e4c7;
     box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     margin: 200px;
     margin-left: 37%;

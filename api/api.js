@@ -188,15 +188,24 @@ app.post('/plantData/getLatest', authMiddleware, async function (req, res) {
 });
 
 app.post('/plantData/upload', authMiddleware, async function (req, res) {
-    const dissolved_solids = req.body.dissolved_solids;
-    const light_level = req.body.light_level;
+
+    const dissolved_solids = req.body.TDS;
     const pressure = req.body.pressure;
-    const temperature = req.body.temperature;
+    const temperature = req.body.temp;
     const humidity = req.body.humidity;
     const picture = req.body.picture;
+    const red_light = req.body.red_light;
+    const orange_light = req.body.orange_light;
+    const yellow_light = req.body.yellow_light;
+    const green_light = req.body.green_light;
+    const light_blue_light = req.body.light_blue_light;
+    const blue_light = req.body.blue_light;
+    const purple_light = req.body.purple_light;
+    const plant_number = req.body.plant_number;
     const number_of_leaves = -1;
 
-    let plantData = await uploadPlantData(dissolved_solids, light_level, pressure, temperature, humidity, picture, number_of_leaves);
+    let plantData = await uploadPlantData(dissolved_solids, pressure, temperature, humidity, picture, number_of_leaves,
+                              red_light, orange_light, yellow_light, green_light, light_blue_light, blue_light, purple_light, plant_number);
 
     return handleResponse(req, res, 201, plantData);
 });
@@ -237,9 +246,9 @@ app.post('/notes/getLatest', authMiddleware, async function (req, res) {
 });
 
 app.post('/notes/newNote', authMiddleware, async function (req, res) {
-    const note = req.body.note;
+    const note = req.body;
 
-    let plantData = await createNote();
+    let plantData = await createNote(note);
     console.log(plantData);
     return handleResponse(req, res, 200);
 });
@@ -252,9 +261,9 @@ app.post('/notes/updateNote', authMiddleware, async function (req, res) {
 });
 
 app.post('/notes/deleteNote', authMiddleware, async function (req, res) {
-    const noteID = req.body.noteID;
+    const note_id = req.body.id;
 
-    let plantData = await deleteNote(noteID);
+    let plantData = await deleteNote(note_id);
     return handleResponse(req, res, 200);
 });
 

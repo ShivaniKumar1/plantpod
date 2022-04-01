@@ -70,14 +70,15 @@ async function getLatestPlantData()
   return r;
 }
 
-async function uploadPlantData(dissolved_solids, light_level, pressure, temperature, humidity, picture, number_of_leaves)
+async function uploadPlantData(dissolved_solids, pressure, temperature, humidity, picture, number_of_leaves,
+                          red_light, orange_light, yellow_light, green_light, light_blue_light, blue_light, purple_light)
 {
   await sqlite.open('../database/plantpod.sqlite3');
 
   // SANITIZE DATA
-  let sql = 'INSERT INTO SensorData (dissolved_solids, light_level, pressure, temperature, humidity, picture, number_of_leaves) VALUES (?, ?, ?, ?, ?, ?, ?);'
+  let sql = 'INSERT INTO SensorData (dissolved_solids, pressure, temperature, humidity, picture, number_of_leaves, red_light, orange_light, yellow_light, green_light, light_blue_light, blue_light, purple_light, plant_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);'
 
-  r = await sqlite.push(sql, [dissolved_solids, light_level, pressure, temperature, humidity, picture, number_of_leaves]);
+  r = await sqlite.push(sql, [dissolved_solids, pressure, temperature, humidity, picture, number_of_leaves, red_light, orange_light, yellow_light, green_light, light_blue_light, blue_light, purple_light, plant_number]);
 
   return r;
 }
@@ -150,7 +151,7 @@ async function createNote(note)
   // SANITIZE DATA
   let sql = 'INSERT INTO Notes (user_id, sensor_data_id, note, date) VALUES (?, ?, ?, ?)'
 
-  r = await sqlite.push(sql, [note.userID, note.sensorDataID, note.note, new Date().toLocaleString()]);
+  r = await sqlite.push(sql, [note.user_id, note.sensor_data_id, note.note, new Date().toLocaleString()]);
 
   return true;
 }

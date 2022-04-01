@@ -21,6 +21,8 @@ async function getUserNotes() {
 }
 
 async function updateNote(note) {
+    if (note.note === "" || note.note == undefined)
+      return deleteNote(note);
     return await fetch(env.APIURL + '/notes/updateNote', {
         method: 'POST',
         headers: {
@@ -28,6 +30,20 @@ async function updateNote(note) {
             'Authorization': 'Bearer ' + getToken()
         },
         body: JSON.stringify(note)
+    })
+    .then(res => { if (res.status == 401) history.push('/Login'); return res.json() })
+    .then(json => { console.log(json);})
+}
+
+async function deleteNote(note) {
+    let body = { id: note.id };
+    return await fetch(env.APIURL + '/notes/deleteNote', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + getToken()
+        },
+        body: JSON.stringify(body)
     })
     .then(res => { if (res.status == 401) history.push('/Login'); return res.json() })
     .then(json => { console.log(json);})
@@ -109,7 +125,12 @@ export default function Usernotes() {
               <Row>
                 <Col>
                   <Row>
-                    <Col>Welcome back {getUserInfo().username}</Col>
+                    <Col>
+                      <div className="header">
+                        {currentNote.date} - {currentNote.id}
+                        <div class='lineBreak'/>
+                      </div>
+                    </Col>
                     <Col md="auto"></Col>
                   </Row>
                   <Row>

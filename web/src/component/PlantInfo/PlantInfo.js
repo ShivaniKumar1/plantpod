@@ -39,16 +39,16 @@ export default function PlantInfo() {
             accessor: 'id',
           },
           {
+            Header: 'Plant Number',
+            accessor: 'plant_number',
+          },
+          {
             Header: 'Date',
             accessor: 'date',
           },
           {
             Header: 'Dissolved Solids',
             accessor: 'dissolved_solids',
-          },
-          {
-            Header: 'Light Level',
-            accessor: 'light_level',
           },
           {
             Header: 'Pressure',
@@ -65,7 +65,35 @@ export default function PlantInfo() {
           {
             Header: 'Leaves',
             accessor: 'number_of_leaves',
-          }
+          },
+          {
+            Header: 'Red Light',
+            accessor: 'red_light',
+          },
+          {
+            Header: 'Orange Light',
+            accessor: 'orange_light',
+          },
+          {
+            Header: 'Yellow Light',
+            accessor: 'yellow_light',
+          },
+          {
+            Header: 'Green Light',
+            accessor: 'green_light',
+          },
+          {
+            Header: 'Light Blue Light',
+            accessor: 'light_blue_light',
+          },
+          {
+            Header: 'Blue Light',
+            accessor: 'blue_light',
+          },
+          {
+            Header: 'Purple Light',
+            accessor: 'purple_light',
+          },
         ],
       }
     ],
@@ -177,11 +205,17 @@ export default function PlantInfo() {
         id: "~",
         date: "~",
         dissolved_solids: compareCard1.dissolved_solids - compareCard2.dissolved_solids,
-        light_level: compareCard1.light_level - compareCard2.light_level,
         pressure: compareCard1.pressure - compareCard2.pressure,
         temperature: compareCard1.temperature - compareCard2.temperature,
         humidity: compareCard1.humidity - compareCard2.humidity,
         number_of_leaves: compareCard1.number_of_leaves - compareCard2.number_of_leaves,
+        red_light: compareCard1.red_light - compareCard2.red_light,
+        orange_light: compareCard1.orange_light - compareCard2.orange_light,
+        yellow_light: compareCard1.yellow_light - compareCard2.yellow_light,
+        green_light: compareCard1.green_light - compareCard2.green_light,
+        light_blue_light: compareCard1.light_blue_light - compareCard2.light_blue_light,
+        blue_light: compareCard1.blue_light - compareCard2.blue_light,
+        purple_light: compareCard1.purple_light - compareCard2.purple_light,
         comparisonData: true
       }
       return cdDiff;
@@ -198,46 +232,48 @@ export default function PlantInfo() {
     return (
 
         <div className="plantInfo">
-            <div id={cardStyle}>
-                {cards.map((item, i) => ( <CardTable cardData={sendCardData[i]}
-                  compareCard={compareCards}/> ))}
-            </div>
-            <p>Plant Info Table</p>
+          <div className="content">
+              <div id={cardStyle}>
+                  {cards.map((item, i) => ( <CardTable cardData={sendCardData[i]}
+                    compareCard={compareCards}/> ))}
+              </div>
+              <div className="header">Plant Info Table</div>
+              <div className='lineBreak'/>
 
-            <table {...getTableProps()}>
-            <thead>
-              {headerGroups.map(headerGroup => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map(column => (
-                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                      {column.render('Header')}
-                      <span>
-                        {column.isSorted
-                          ? column.isSortedDesc
-                            ? ' 🔽'
-                            : ' 🔼'
-                          : ''}
-                      </span>
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {page.map((row, i) => {
-                prepareRow(row)
-                return (
-                  <tr {...row.getRowProps()}>
-                    {row.cells.map(cell => {
-                      return <td {...cell.getCellProps()} onClick={(e) => showCard(row.original, e.target.checked)}>{cell.render('Cell')}</td>
-                    })}
+              <table {...getTableProps()}>
+              <thead>
+                {headerGroups.map(headerGroup => (
+                  <tr {...headerGroup.getHeaderGroupProps()}>
+                    {headerGroup.headers.map(column => (
+                      <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                        {column.render('Header')}
+                        <span>
+                          {column.isSorted
+                            ? column.isSortedDesc
+                              ? ' 🔽'
+                              : ' 🔼'
+                            : ''}
+                        </span>
+                      </th>
+                    ))}
                   </tr>
-                )
-              })}
-            </tbody>
-          </table>
+                ))}
+              </thead>
+              <tbody {...getTableBodyProps()}>
+                {page.map((row, i) => {
+                  prepareRow(row)
+                  return (
+                    <tr {...row.getRowProps()}>
+                      {row.cells.map(cell => {
+                        return <td {...cell.getCellProps()} onClick={(e) => showCard(row.original, e.target.checked)}>{cell.render('Cell')}</td>
+                      })}
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
 
-          <div className="pagination">
+          <div className="pagination" style={{'marginTop': '15px'}}>
             <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
               {'<<'}
             </button>{' '}
@@ -281,9 +317,11 @@ export default function PlantInfo() {
               ))}
             </select>
           </div>
-
-          <DataChart chartData={chartData}/>
-
         </div>
+        <br/>
+        <div className="content">
+          <DataChart chartData={chartData}/>
+        </div>
+      </div>
     )
 }

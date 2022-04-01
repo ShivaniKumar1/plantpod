@@ -55,51 +55,79 @@ export default function Dash() {
           <Row>
             <Col>
               <Row>
-                <Col>Welcome back {getUserInfo().username}</Col>
-                <Col md="auto"><Button>Logout</Button></Col>
+                <Col>
+                  <div className="header">
+                    Welcome back {getUserInfo().username}
+                  </div>
+                </Col>
+                <div class='lineBreak'/>
               </Row>
               <Row>
-                Your Latest Note
+                <div className="header">Your Latest Note</div>
+                <div class='lineBreak'/>
                 <textarea value={latestNote.note}></textarea>
               </Row>
             </Col>
             <Col>
+              <div className="header">
                 The Latest Data
-                <table>
-                    <tbody>
-                    <tr>
-                        <th className="nameCol">ID</th>
-                        <th className="dataCol">{latestPlantData.id}</th>
-                    </tr>
-                    <tr>
-                        <th className="nameCol">Date</th>
-                        <th className="dataCol">{latestPlantData.date}</th>
-                    </tr>
-                    <tr>
-                        <th className="nameCol">Dissolved Solids</th>
-                        <th className="dataCol">{latestPlantData.dissolved_solids}</th>
-                    </tr>
-                    <tr>
-                        <th className="nameCol">Light Level</th>
-                        <th className="dataCol">{latestPlantData.light_level}</th>
-                    </tr>
-                    <tr>
-                        <th className="nameCol">Pressure</th>
-                        <th className="dataCol">{latestPlantData.pressure}</th>
-                    </tr>
-                    <tr>
-                        <th className="nameCol">Temperature</th>
-                        <th className="dataCol">{latestPlantData.temperature}</th>
-                    </tr>
-                    <tr>
-                        <th className="nameCol">Humidity</th>
-                        <th className="dataCol">{latestPlantData.humidity}</th>
-                    </tr>
-                    </tbody>
+              </div>
+              <div class='lineBreak'/>
+              <table>
+                  <tbody>
+                      <tr>
+                          <th className="nameCol">ID</th>
+                          <th className="dataCol">{latestPlantData.id}</th>
+                          <th className="nameCol">Red Light</th>
+                          <th className="dataCol">{latestPlantData.red_light}</th>
+                      </tr>
+                      <tr>
+                          <th className="nameCol">Date</th>
+                          <th className="dataCol">{latestPlantData.date}</th>
+                          <th className="nameCol">Orange Light</th>
+                          <th className="dataCol">{latestPlantData.orange_light}</th>
+                      </tr>
+                      <tr>
+                          <th className="nameCol">Dissolved Solids</th>
+                          <th className="dataCol">{latestPlantData.dissolved_solids}</th>
+                          <th className="nameCol">Yellow Light</th>
+                          <th className="dataCol">{latestPlantData.yellow_light}</th>
+                      </tr>
+                      <tr>
+                          <th className="nameCol">Pressure</th>
+                          <th className="dataCol">{latestPlantData.pressure}</th>
+                          <th className="nameCol">Green Light</th>
+                          <th className="dataCol">{latestPlantData.green_light}</th>
+                      </tr>
+                      <tr>
+                          <th className="nameCol">Temperature</th>
+                          <th className="dataCol">{latestPlantData.temperature}</th>
+                          <th className="nameCol">Light Blue Light</th>
+                          <th className="dataCol">{latestPlantData.light_blue_light}</th>
+                      </tr>
+                      <tr>
+                          <th className="nameCol">Humidity</th>
+                          <th className="dataCol">{latestPlantData.humidity}</th>
+                          <th className="nameCol">Green Light</th>
+                          <th className="dataCol">{latestPlantData.blue_light}</th>
+                      </tr>
+                      <tr>
+                          <th className="nameCol">Leaves</th>
+                          <th className="dataCol">{latestPlantData.number_of_leaves}</th>
+                          <th className="nameCol">Purple Light</th>
+                          <th className="dataCol">{latestPlantData.purple_light}</th>
+                      </tr>
+                  </tbody>
                 </table>
             </Col>
 
-            <Col>The Latest Image<br/><img src={latestPlantData.picture} alt="Latest Plant Image"/></Col>
+            <Col>
+              <div className="header">
+                The Latest Image
+              </div>
+              <div class='lineBreak'/>
+              <img src={latestPlantData.picture} alt="Latest Plant Image"/>
+            </Col>
           </Row>
         </Container>
     </div>
