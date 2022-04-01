@@ -232,11 +232,11 @@ export default function PlantInfo() {
     return (
 
         <div className="plantInfo">
-          <div className="content">
-              <div id={cardStyle}>
-                  {cards.map((item, i) => ( <CardTable cardData={sendCardData[i]}
-                    compareCard={compareCards}/> ))}
-              </div>
+          <div id={cardStyle}>
+              {cards.map((item, i) => ( <CardTable cardData={sendCardData[i]}
+                compareCard={compareCards}/> ))}
+          </div>
+          <div className="content2">
               <div className="header">Plant Info Table</div>
               <div className='lineBreak'/>
 
@@ -319,7 +319,7 @@ export default function PlantInfo() {
           </div>
         </div>
         <br/>
-        <div className="content">
+        <div className="content2" style={{marginTop: '500px'}}>
           <DataChart chartData={chartData}/>
         </div>
       </div>

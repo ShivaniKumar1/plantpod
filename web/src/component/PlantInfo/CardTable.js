@@ -117,7 +117,7 @@ export default function CardTable({cardData, compareCard}) {
 
 
     return (
-      <Draggable style={{'z-index': '999999'}}>
+      <Draggable style={{'z-index': '1'}}>
         <Container className="content" style={hidden}>
           <Row>
             <Col><Button primary onClick={() => compareCard(cardData)}>Compare</Button></Col>
