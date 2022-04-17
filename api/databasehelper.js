@@ -73,20 +73,20 @@ async function getLatestPlantData()
 async function uploadPlantData(dissolved_solids, pressure, temperature, humidity, picture, number_of_leaves,
                           red_light, orange_light, yellow_light, green_light, light_blue_light, blue_light, purple_light, plant_number)
 {
- try {
-  await sqlite.open('../database/plantpod.sqlite3');
-  console.log(dissolved_solids);
-  console.log(red_light);
-  // SANITIZE DATA
-  let sql = 'INSERT INTO SensorData (date, dissolved_solids, pressure, temperature, humidity, picture, number_of_leaves, red_light, orange_light, yellow_light, green_light, light_blue_light, blue_light, purple_light, plant_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);'
+  try {
+    await sqlite.open('../database/plantpod.sqlite3');
 
-  r = await sqlite.push(sql, [new Date().toLocaleString(), dissolved_solids, pressure, temperature, humidity, picture, number_of_leaves, red_light, orange_light, yellow_light, green_light, light_blue_light, blue_light, purple_light, plant_number]);
+    let sql = 'INSERT INTO SensorData (date, dissolved_solids, pressure, temperature, humidity, picture, number_of_leaves, red_light, orange_light, yellow_light, green_light, light_blue_light, blue_light, purple_light, plant_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);'
 
-  return r;
-  } catch (error) {
-  console.log(error);
-  return -1;  
-}
+    r = await sqlite.push(sql, [new Date().toLocaleString(), dissolved_solids, pressure, temperature, humidity, picture, number_of_leaves, red_light, orange_light, yellow_light, green_light, light_blue_light, blue_light, purple_light, plant_number]);
+
+    return r;
+  }
+  catch (error)
+  {
+    console.log(error);
+    return -1;
+  }
 }
 
 
@@ -189,9 +189,41 @@ async function deleteNote(id)
   return true;
 }
 
+async function getImage(id)
+{
+  await sqlite.open('../database/plantpod.sqlite3');
+  console.log(id);
+  // SANITIZE DATA
+  let sql = 'SELECT * FROM SensorData WHERE id = ?'
+
+  r = await sqlite.get(sql, [id]);
+
+  if (r == undefined)
+    r = {}
+
+  return r;
+}
+
+async function updateImage(id, picture)
+{
+  await sqlite.open('../database/plantpod.sqlite3');
+
+  // SANITIZE DATA
+  let sql = 'UPDATE SensorData SET picture = ? WHERE id = ?'
+
+  r = await sqlite.push(sql, [picture, id]);
+
+  if (r == undefined)
+    r = {}
+
+  return r;
+}
 
 module.exports =
 {
+  updateImage,
+  getImage,
+
   getUser,
   createUser,
 

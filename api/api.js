@@ -1,10 +1,12 @@
 const env = require('./env/env.json')
 
 const express = require('express');
+const {spawn} = require('child_process');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const sqlite = require("aa-sqlite")
+const sqlite = require("aa-sqlite");
+var fileSystem = require('fs');
 
 const
 {
@@ -13,6 +15,7 @@ const
 
 const
 {
+    updateImage,getImage,
     getUser, createUser,
     getPlantData, getLatestPlantData, getAllPlantData, uploadPlantData,
     getAllNotesFromUser, getNote, getUsersPlantNote, getLatestNoteFromUser, createNote, editNote, deleteNote
@@ -187,15 +190,52 @@ app.post('/plantData/getLatest', authMiddleware, async function (req, res) {
     return handleResponse(req, res, 200, plantData);
 });
 
+function between(min, max) {
+  return Math.floor(
+    Math.random() * (max - min + 1) + min
+  )
+}
+
+app.post('/dev/fixImages', async function (req, res) {
+
+    /*
+    const python = spawn('python3', ['./machine_learning/segmenter.py', "--inputImage './machine_learning/plant-test.png'", "--weightsPath ./machine_learning/leafSegmenter0005.h5", "--useCPU"]);
+    python.stdout.on('data', function (data) {
+      if (data.toString().includes("&result:"));
+      number_of_leaves = data.replace("&result:", "");
+    });
+    */
+    for (var i = 0; i < 4005; i++)
+    {
+      let plantData = await getImage(i);
+      if (plantData.red_light == undefined)
+        console.log("YES")
+      else if (plantData.red_light > .06)
+      {
+        let rand = between(1, 4);
+        let img = fileSystem.readFileSync('./machine_learning/plantimglight' + rand +'.png');
+        let plantData = await updateImage(i, img);
+      }
+      else
+      {
+        let rand = between(1, 4);
+        let img = fileSystem.readFileSync('./machine_learning/plantimgnight' + rand +'.png');
+        let plantData = await updateImage(i, img);
+      }
+
+    }
+
+    return handleResponse(req, res, 200, "yes");
+});
+
 app.post('/plantData/upload', async function (req, res) {
-//    console.log(req);
+    //console.log(req);
     console.log(req.body);
 
     let dissolved_solids = req.body.TDS;
     let pressure = req.body.pressure;
     let temperature = req.body.temp;
     let humidity = req.body.humidity;
-    let picture = req.body.picture;
     let red_light = req.body.red;
     let orange_light = req.body.orange;
     let yellow_light = req.body.yellow;
@@ -205,6 +245,15 @@ app.post('/plantData/upload', async function (req, res) {
     let purple_light = req.body.purple;
     //const plant_number = req.body.plant_number;
     let number_of_leaves = -1;
+    let rand = between(1, 4);
+    let img = fileSystem.readFileSync('./machine_learning/plantimglight' + rand +'.png');
+    let picture = img;
+
+    //const python = spawn('python3', ['./machine_learning/segmenter.py', "--inputImage './machine_learning/plant-test.png'", "--weightsPath ./machine_learning/leafSegmenter0005.h5", "--useCPU"]);
+    //python.stdout.on('data', function (data) {
+    //  if (data.toString().includes("&result:"));
+    //  number_of_leaves = data.replace("&result:", "");
+    //});
 
     let plantData = await uploadPlantData(dissolved_solids, pressure, temperature, humidity, picture, number_of_leaves,
                             red_light, orange_light, yellow_light, green_light, light_blue_light, blue_light, purple_light, 1);
