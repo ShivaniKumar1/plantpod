@@ -187,27 +187,36 @@ app.post('/plantData/getLatest', authMiddleware, async function (req, res) {
     return handleResponse(req, res, 200, plantData);
 });
 
-app.post('/plantData/upload', authMiddleware, async function (req, res) {
+app.post('/plantData/upload', async function (req, res) {
+//    console.log(req);
+    console.log(req.body);
 
-    const dissolved_solids = req.body.TDS;
-    const pressure = req.body.pressure;
-    const temperature = req.body.temp;
-    const humidity = req.body.humidity;
-    const picture = req.body.picture;
-    const red_light = req.body.red_light;
-    const orange_light = req.body.orange_light;
-    const yellow_light = req.body.yellow_light;
-    const green_light = req.body.green_light;
-    const light_blue_light = req.body.light_blue_light;
-    const blue_light = req.body.blue_light;
-    const purple_light = req.body.purple_light;
-    const plant_number = req.body.plant_number;
-    const number_of_leaves = -1;
+    let dissolved_solids = req.body.TDS;
+    let pressure = req.body.pressure;
+    let temperature = req.body.temp;
+    let humidity = req.body.humidity;
+    let picture = req.body.picture;
+    let red_light = req.body.red;
+    let orange_light = req.body.orange;
+    let yellow_light = req.body.yellow;
+    let green_light = req.body.green;
+    let light_blue_light = req.body.light_blue;
+    let blue_light = req.body.blue;
+    let purple_light = req.body.purple;
+    //const plant_number = req.body.plant_number;
+    let number_of_leaves = -1;
 
     let plantData = await uploadPlantData(dissolved_solids, pressure, temperature, humidity, picture, number_of_leaves,
-                              red_light, orange_light, yellow_light, green_light, light_blue_light, blue_light, purple_light, plant_number);
+                            red_light, orange_light, yellow_light, green_light, light_blue_light, blue_light, purple_light, 1);
 
-    return handleResponse(req, res, 201, plantData);
+    return handleResponse(req, res, 201, req.body);
+});
+
+app.post('/plantData/uploadPicture', async function(req, res) {
+    console.log(req);
+    console.log(req.body);
+
+    return handleResponse(req, res, 201, req.body);
 });
 
 

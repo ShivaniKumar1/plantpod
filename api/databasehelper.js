@@ -71,16 +71,22 @@ async function getLatestPlantData()
 }
 
 async function uploadPlantData(dissolved_solids, pressure, temperature, humidity, picture, number_of_leaves,
-                          red_light, orange_light, yellow_light, green_light, light_blue_light, blue_light, purple_light)
+                          red_light, orange_light, yellow_light, green_light, light_blue_light, blue_light, purple_light, plant_number)
 {
+ try {
   await sqlite.open('../database/plantpod.sqlite3');
-
+  console.log(dissolved_solids);
+  console.log(red_light);
   // SANITIZE DATA
-  let sql = 'INSERT INTO SensorData (dissolved_solids, pressure, temperature, humidity, picture, number_of_leaves, red_light, orange_light, yellow_light, green_light, light_blue_light, blue_light, purple_light, plant_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);'
+  let sql = 'INSERT INTO SensorData (date, dissolved_solids, pressure, temperature, humidity, picture, number_of_leaves, red_light, orange_light, yellow_light, green_light, light_blue_light, blue_light, purple_light, plant_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);'
 
-  r = await sqlite.push(sql, [dissolved_solids, pressure, temperature, humidity, picture, number_of_leaves, red_light, orange_light, yellow_light, green_light, light_blue_light, blue_light, purple_light, plant_number]);
+  r = await sqlite.push(sql, [new Date().toLocaleString(), dissolved_solids, pressure, temperature, humidity, picture, number_of_leaves, red_light, orange_light, yellow_light, green_light, light_blue_light, blue_light, purple_light, plant_number]);
 
   return r;
+  } catch (error) {
+  console.log(error);
+  return -1;  
+}
 }
 
 
