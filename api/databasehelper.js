@@ -189,10 +189,29 @@ async function deleteNote(id)
   return true;
 }
 
+async function removeBadData()
+{
+  try {
+    await sqlite.open('../database/plantpod.sqlite3');
+
+    // SANITIZE DATA
+    let sql = 'DELETE FROM SensorData WHERE red_light IS NULL OR dissolved_solids = 0 OR humidity = 0';
+
+    r = await sqlite.push(sql, []);
+
+    return true;
+  }
+  catch (error)
+  {
+    console.log(error);
+    return -1;
+  }
+}
+
 async function getImage(id)
 {
   await sqlite.open('../database/plantpod.sqlite3');
-  console.log(id);
+  //console.log(id);
   // SANITIZE DATA
   let sql = 'SELECT * FROM SensorData WHERE id = ?'
 
@@ -204,14 +223,14 @@ async function getImage(id)
   return r;
 }
 
-async function updateImage(id, picture)
+async function updateImage(id, picture, leaves)
 {
   await sqlite.open('../database/plantpod.sqlite3');
 
   // SANITIZE DATA
-  let sql = 'UPDATE SensorData SET picture = ? WHERE id = ?'
+  let sql = 'UPDATE SensorData SET picture = ?, number_of_leaves = ? WHERE id = ?'
 
-  r = await sqlite.push(sql, [picture, id]);
+  r = await sqlite.push(sql, [picture, id, leaves]);
 
   if (r == undefined)
     r = {}
@@ -223,6 +242,7 @@ module.exports =
 {
   updateImage,
   getImage,
+  removeBadData,
 
   getUser,
   createUser,

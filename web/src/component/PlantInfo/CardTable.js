@@ -68,6 +68,20 @@ async function deleteNote(note) {
     .then(json => { console.log(json);})
 }
 
+async function getImage(plantID) {
+    let body = {id: plantID };
+    return await fetch(env.APIURL + '/plantData/get', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + getToken()
+        },
+        body: JSON.stringify(body)
+    })
+    .then(res => { if (res.status == 401) history.push('/Login'); return res.json() })
+    .then(json => { return json.picture;})
+}
+
 export default function CardTable({cardData, compareCard}) {
     const [hidden, setHidden] = useState({'visibility': 'visible'})
     const changeHidden = (visible) => {
@@ -106,6 +120,19 @@ export default function CardTable({cardData, compareCard}) {
       setEditingNoteText(event.target.value);
     }
 
+    const [picture, setPicture] = useState([]);
+    const [loadingPicture, setLoadingPicture] = useState(true);
+    useEffect(() => {
+        async function loadPicture() {
+            var picture = await getImage(cardData.id);
+            setPicture(picture);
+
+
+            setLoadingPicture(false);
+        }
+        if (loadingPicture) { loadPicture(); }
+    }, []);
+
     const colorData = (value) => {
       if (cardData.comparisonData)
         if (value < 0)
@@ -117,13 +144,13 @@ export default function CardTable({cardData, compareCard}) {
 
 
     return (
-      <Draggable style={{'z-index': '1'}}>
+      <Draggable>
         <Container className="content" style={hidden}>
           <Row>
             <Col><Button primary onClick={() => compareCard(cardData)}>Compare</Button></Col>
           </Row>
           <Row>
-            <Col><img src={cardData.picture} alt="Plant Image"></img></Col>
+            <Col><img src={picture} alt="Plant Image"></img></Col>
           </Row>
           <Row>
             <Col xs={6}>

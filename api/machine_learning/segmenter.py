@@ -144,7 +144,7 @@ def inference():
     results = inference_model.detect([image], verbose=args.verbose)
     # rgb_mask = mask_to_rgb(results[0]['masks'])
     # io.imsave(out_path, rgb_mask)
-    print("RESULTS!!!!!!!!!!!!! >>>" + str(results[0]['masks'].shape[2]));
+    print(str(results[0]['masks'].shape[2]));
 
 if __name__ == '__main__':
     inference()

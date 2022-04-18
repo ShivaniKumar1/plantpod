@@ -319,7 +319,7 @@ export default function PlantInfo() {
           </div>
         </div>
         <br/>
-        <div className="content2" style={{marginTop: '500px'}}>
+        <div className="content2" style={{marginTop: '800px'}}>
           <DataChart chartData={chartData}/>
         </div>
       </div>

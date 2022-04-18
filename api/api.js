@@ -15,7 +15,7 @@ const
 
 const
 {
-    updateImage,getImage,
+    updateImage, getImage, removeBadData,
     getUser, createUser,
     getPlantData, getLatestPlantData, getAllPlantData, uploadPlantData,
     getAllNotesFromUser, getNote, getUsersPlantNote, getLatestNoteFromUser, createNote, editNote, deleteNote
@@ -169,7 +169,9 @@ app.post('/users/logout', (req, res) =>
 app.post('/plantData/getAll', authMiddleware, async function (req, res) {
     let plantData = (await getAllPlantData()).data;
 
-    plantData.forEach((i) => { i.picture = convertByteArrayToBase64(i.picture)});
+    // Don't return the pictures with getall, the request will be to big and crash it
+    plantData.forEach((i) => { i.picture = null});
+
     return handleResponse(req, res, 200, plantData);
 });
 
@@ -205,24 +207,43 @@ app.post('/dev/fixImages', async function (req, res) {
       number_of_leaves = data.replace("&result:", "");
     });
     */
-    for (var i = 0; i < 4005; i++)
+    await removeBadData();
+
+    let number_of_leaves = -1;
+
+    for (var i = 0; i < 6005; i++)
     {
       let plantData = await getImage(i);
       if (plantData.red_light == undefined)
-        console.log("YES")
+        1==1
       else if (plantData.red_light > .06)
       {
         let rand = between(1, 4);
         let img = fileSystem.readFileSync('./machine_learning/plantimglight' + rand +'.png');
-        let plantData = await updateImage(i, img);
+        if (rand == 1)
+          number_of_leaves = 33
+        if (rand == 2)
+          number_of_leaves = 26
+        if (rand == 3)
+          number_of_leaves = 35
+        if (rand == 4)
+          number_of_leaves = 27
+
+        let plantData = await updateImage(i, img, number_of_leaves);
       }
       else
       {
-        let rand = between(1, 4);
+        let rand = 1;
         let img = fileSystem.readFileSync('./machine_learning/plantimgnight' + rand +'.png');
-        let plantData = await updateImage(i, img);
+
+        let plantData = await updateImage(i, img, 15);
       }
 
+      const python = spawn('python3', ['./machine_learning/segmenter.py', "--inputImage", './machine_learning/plantimglight' + 1 +'.png', "--weightsPath", "./machine_learning/leafSegmenter0005.h5", "--useCPU"]);
+      python.stdout.on('data', function (data) {
+        number_of_leaves = Number(data);
+        console.log("leaves: " + number_of_leaves);
+      });
     }
 
     return handleResponse(req, res, 200, "yes");
@@ -245,15 +266,27 @@ app.post('/plantData/upload', async function (req, res) {
     let purple_light = req.body.purple;
     //const plant_number = req.body.plant_number;
     let number_of_leaves = -1;
-    let rand = between(1, 4);
-    let img = fileSystem.readFileSync('./machine_learning/plantimglight' + rand +'.png');
-    let picture = img;
+    let picture = undefined;
+    let picturePath = "";
 
-    //const python = spawn('python3', ['./machine_learning/segmenter.py', "--inputImage './machine_learning/plant-test.png'", "--weightsPath ./machine_learning/leafSegmenter0005.h5", "--useCPU"]);
-    //python.stdout.on('data', function (data) {
-    //  if (data.toString().includes("&result:"));
-    //  number_of_leaves = data.replace("&result:", "");
-    //});
+    if (plantData.red_light > .06)
+    {
+      let rand = between(1, 4);
+      picturePath = './machine_learning/plantimglight' + rand +'.png';
+      picture = fileSystem.readFileSync(picturePath);
+    }
+    else
+    {
+      let rand = 1;
+      picturePath = './machine_learning/plantimgnight' + rand +'.png';
+      picture = fileSystem.readFileSync(picturePath);
+    }
+
+    const python = spawn('python3', ['./machine_learning/segmenter.py', "--inputImage", picturePath, "--weightsPath", "./machine_learning/leafSegmenter0005.h5", "--useCPU"]);
+    python.stdout.on('data', function (data) {
+      number_of_leaves = Number(data);
+      console.log("leaves: " + number_of_leaves);
+    });
 
     let plantData = await uploadPlantData(dissolved_solids, pressure, temperature, humidity, picture, number_of_leaves,
                             red_light, orange_light, yellow_light, green_light, light_blue_light, blue_light, purple_light, 1);
