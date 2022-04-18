@@ -238,13 +238,13 @@ app.post('/dev/fixImages', async function (req, res) {
 
         let plantData = await updateImage(i, img, 15);
       }
-
-      const python = spawn('python3', ['./machine_learning/segmenter.py', "--inputImage", './machine_learning/plantimglight' + 1 +'.png', "--weightsPath", "./machine_learning/leafSegmenter0005.h5", "--useCPU"]);
-      python.stdout.on('data', function (data) {
-        number_of_leaves = Number(data);
-        console.log("leaves: " + number_of_leaves);
-      });
     }
+
+    const python = spawn('python3', ['./machine_learning/segmenter.py', "--inputImage", './machine_learning/plantimglight' + 1 +'.png', "--weightsPath", "./machine_learning/leafSegmenter0005.h5", "--useCPU"]);
+    python.stdout.on('data', function (data) {
+      number_of_leaves = Number(data);
+      console.log("leaves: " + number_of_leaves);
+    });
 
     return handleResponse(req, res, 200, "yes");
 });
@@ -269,7 +269,7 @@ app.post('/plantData/upload', async function (req, res) {
     let picture = undefined;
     let picturePath = "";
 
-    if (plantData.red_light > .06)
+    if (red_light > .06)
     {
       let rand = between(1, 4);
       picturePath = './machine_learning/plantimglight' + rand +'.png';
