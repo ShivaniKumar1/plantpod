@@ -226,12 +226,12 @@ async function getImage(id)
 async function updateImage(id, picture, leaves)
 {
   await sqlite.open('../database/plantpod.sqlite3');
-
+  
   // SANITIZE DATA
   let sql = 'UPDATE SensorData SET picture = ?, number_of_leaves = ? WHERE id = ?'
 
-  r = await sqlite.push(sql, [picture, id, leaves]);
-
+  r = await sqlite.push(sql, [picture, leaves, id]);
+  console.log(r);
   if (r == undefined)
     r = {}
 
