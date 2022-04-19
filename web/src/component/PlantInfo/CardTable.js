@@ -147,7 +147,7 @@ export default function CardTable({cardData, compareCard}) {
       <Draggable>
         <Container className="content" style={hidden}>
           <Row>
-            <Col><Button primary onClick={() => compareCard(cardData)}>Compare</Button></Col>
+            <Col><button primary onClick={() => compareCard(cardData)}>Compare</button></Col>
           </Row>
           <Row>
             <Col><img src={picture} alt="Plant Image"></img></Col>
@@ -206,8 +206,8 @@ export default function CardTable({cardData, compareCard}) {
             </Col>
           </Row>
           <Row>
-            <Col><Button primary onClick={() => changeHidden(false)}>Return</Button></Col>
-            <Col><Button primary onClick={() => updateNote(currentNote, isNewNote)}>Save Note</Button></Col>
+            <Col><button primary onClick={() => changeHidden(false)}>Return</button></Col>
+            <Col><button primary onClick={() => updateNote(currentNote, isNewNote)}>Save Note</button></Col>
           </Row>
         </Container>
       </Draggable>

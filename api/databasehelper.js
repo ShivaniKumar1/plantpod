@@ -195,7 +195,7 @@ async function removeBadData()
     await sqlite.open('../database/plantpod.sqlite3');
 
     // SANITIZE DATA
-    let sql = 'DELETE FROM SensorData WHERE red_light IS NULL OR dissolved_solids = 0 OR humidity = 0';
+    let sql = 'DELETE FROM SensorData WHERE red_light IS NULL OR dissolved_solids = 0 OR humidity = 0 OR id = 1 OR id = 2 OR id = 3 OR id = 4';
 
     r = await sqlite.push(sql, []);
 

@@ -137,7 +137,7 @@ export default function Usernotes() {
                     <textarea placeholder="Please select a note..." value={editingNoteText} onChange={changeCurrentNoteText}></textarea>
                   </Row>
                   <Row>
-                    <Button onClick={() => updateNote(currentNote)}>Save Changes</Button>
+                    <button onClick={() => updateNote(currentNote)}>Save Changes</button>
                   </Row>
                 </Col>
                 <Col>

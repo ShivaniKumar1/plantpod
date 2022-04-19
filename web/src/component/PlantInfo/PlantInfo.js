@@ -153,9 +153,9 @@ export default function PlantInfo() {
                   id: 'selection',
                   Header: ({ getToggleAllPageRowsSelectedProps }) => (
                     <div>
-                      <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
+                      
                     </div>
-                  ),
+		  ),
                   Cell: ({ row }) => (
                     <div>
                       <IndeterminateCheckbox onClick={(e) => {changeChartData(e.target.checked, row.original)}}{...row.getToggleRowSelectedProps()} />

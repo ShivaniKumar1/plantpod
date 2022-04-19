@@ -112,19 +112,19 @@ export default function PlantInfo({chartData}) {
 
     return (
         <div>
-          <Button onClick={changeDissolvedSolidsKey}>Toggle Dissolved Solids</Button>
-          <Button onClick={changePressureKey}>Toggle Pressure</Button>
-          <Button onClick={changeTemperatureKey}>Toggle Temperature</Button>
-          <Button onClick={changeHumidityKey}>Toggle Humidity</Button>
-          <Button onClick={changeLeavesKey}>Toggle Leaves</Button>
-          <Button onClick={changeRedLightKey}>Toggle Red Light</Button>
+          <button onClick={changeDissolvedSolidsKey}>Toggle Dissolved Solids</button>
+          <button onClick={changePressureKey}>Toggle Pressure</button>
+          <button onClick={changeTemperatureKey}>Toggle Temperature</button>
+          <button onClick={changeHumidityKey}>Toggle Humidity</button>
+          <button onClick={changeLeavesKey}>Toggle Leaves</button>
+          <button onClick={changeRedLightKey}>Toggle Red Light</button>
           <br/>
-          <Button onClick={changeOrangeLightKey}>Toggle Orange Light</Button>
-          <Button onClick={changeYellowLightKey}>Toggle Yellow Light</Button>
-          <Button onClick={changeGreenLightKey}>Toggle Green Light</Button>
-          <Button onClick={changeLightBlueLightKey}>Toggle Light Blue Light</Button>
-          <Button onClick={changeBlueLightKey}>Toggle Blue Light</Button>
-          <Button onClick={changePurpleLightKey}>Toggle Purple Light</Button>
+          <button onClick={changeOrangeLightKey}>Toggle Orange Light</button>
+          <button onClick={changeYellowLightKey}>Toggle Yellow Light</button>
+          <button onClick={changeGreenLightKey}>Toggle Green Light</button>
+          <button onClick={changeLightBlueLightKey}>Toggle Light Blue Light</button>
+          <button onClick={changeBlueLightKey}>Toggle Blue Light</button>
+          <button onClick={changePurpleLightKey}>Toggle Purple Light</button>
           <ResponsiveContainer aspect={3}>
                 <LineChart data={chartData} margin={{ right: 300 }}>
                     <CartesianGrid />
@@ -136,7 +136,7 @@ export default function PlantInfo({chartData}) {
                     <Line dataKey={dissolvedSolidsKey}
                         stroke="black" activeDot={{ r: 8 }} />
                     <Line dataKey={pressureKey}
-                        stroke="yellow" activeDot={{ r: 8 }} />
+                        stroke="#1A237E" activeDot={{ r: 8 }} />
                     <Line dataKey={temperatureKey}
                         stroke="blue" activeDot={{ r: 8 }} />
                     <Line dataKey={humidityKey}
@@ -149,7 +149,7 @@ export default function PlantInfo({chartData}) {
                     <Line dataKey={orangeLightKey}
                         stroke="orange" activeDot={{ r: 8 }} />
                     <Line dataKey={yellowLightKey}
-                        stroke="yellow" activeDot={{ r: 8 }} />
+                        stroke="#ADAB00" activeDot={{ r: 8 }} />
                     <Line dataKey={greenLightKey}
                         stroke="green" activeDot={{ r: 8 }} />
                     <Line dataKey={lightBlueLightKey}
